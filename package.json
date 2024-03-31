@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
@@ -12,16 +13,16 @@
   },
   "name": "asopac",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "index.js",
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^3.1.0"
   },
   "scripts": {
     "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Juan Ferrón Paterna",
   "license": "ISC",
-  "description": ""
+  "description": "Aociacion de pacientes multiproposito"
 }
