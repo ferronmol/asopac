@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const UserRoutes = require('./Routes/UserRoutes');
 const app = express();
-const PORT = process.env.PORT || 9001;
+const PORT = process.env.PORT || 9000;
 
 // Middleware
 app.use(cors());
@@ -17,8 +17,10 @@ apiAsopacRouter.get('/', (req, res) => {
     res.send('Bienvenido a la API de Asopac');
 });
 
+
 // Usar el enrutador con el prefijo '/apiAsopac'
 app.use('/apiAsopac', apiAsopacRouter);
+app.use('/apiAsopac/users', UserRoutes);
 
 
 app.listen(PORT, () => {

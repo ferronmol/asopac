@@ -1,6 +1,7 @@
 const User = require('../Routes/Models/UserModel');
 const bcrypt = require('bcryptjs');
 
+
 exports.registerUser = async (req, res) => {
 const { email } = req.body;
     try {
