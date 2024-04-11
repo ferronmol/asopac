@@ -7,9 +7,17 @@ const patientSchema = new Schema({
         type: String,
         required: true
     },
+    age: {
+        type: Number,
+        required : true,
+        validate:({
+            validator: function(v) {
+                return v > 0 && v < 120;
+            }, message: 'La edad debe ser mayor a 0 y menor a 120'
+        })
+    },
     diagnosis: {
         type: String,
-        required: true
     },
     // Relación con el modelo de Usuario
     createdBy: {
