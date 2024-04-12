@@ -7,22 +7,27 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.5.0",
-    "mongoose": "^8.2.4",
-    "node": "^18.20.0",
+    "mongoose": "^8.3.1",
+    "morgan": "^1.10.0",
+    "node": "^18.20.2",
     "sequelize": "^6.37.2"
   },
   "name": "asopac",
   "version": "1.0.0",
   "main": "index.js",
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
   },
   "scripts": {
     "dev": "nodemon src/index.js",
+    "start": "src/index.js",
+    "webpack": "webpack --mode development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Juan Ferrón Paterna",
   "license": "ISC",
-  "description": "Aociacion de pacientes multiproposito"
+  "description": "Plataforma de Asociacionesde pacientes"
 }
