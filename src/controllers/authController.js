@@ -1,19 +1,21 @@
 import RegisterAssociation from "../models/registerAssociationModel.js";
 
-export const register = (req, res) => {
+export const register = async (req, res) => {
   try {
     const { associationName, email, password } = req.body;
 
-    new RegisterAssociation({
+    const newRegisterAssociation = new RegisterAssociation({
       associationName,
       email,
       password,
-    }).save();
+    });
 
-    res.send("Registro de asociación exitoso");
+    const savedAssociation = await newRegisterAssociation.save();
+
+    res.status(201).json(savedAssociation); //devuelve el objeto guardado
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error registering the associate" });
+    res.status(500).json({ message: "Error al registrar la asociación" });
   }
 };
 
