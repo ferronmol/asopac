@@ -32,7 +32,7 @@ const RegisterAssociationSchema = new Schema(
       },
     },
   },
-  { collection: "registerAssociation" } //nombre de la colección en la base de datos
+  { collection: "Associations" } //nombre de la colección en la base de datos
 );
 
 const RegisterAssociation = mongoose.model(
