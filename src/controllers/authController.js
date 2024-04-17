@@ -72,7 +72,17 @@ export const login = async (req, res) => {
   }
 };
 
+export function logout(req, res) {
+  res.cookie("token", "", { maxAge: 1 }); //masAge 1 para que expire inmediatamente
+  res.status(200).json({ message: "Sesión cerrada" });
+}
+
+export function profile(req, res) {
+  res.status(200).json({ message: "Perfil de la asociación" });
+}
 export default {
   register,
   login,
+  logout,
+  profile,
 };
