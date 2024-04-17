@@ -1,18 +1,29 @@
 import jwt from "jsonwebtoken";
+
 export const authRequired = async (req, res, next) => {
   try {
     // Verificar si existe el token
     const token = req.cookies.token;
     //console.log(token);
     if (!token) {
-      return res.status(401).json({ message: "No autorizado" });
+      return res
+        .status(401)
+        .json({ message: "No autorizado, no existe token" });
     }
     // Verificar si el token es válido
-    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
-    req.userId = decoded.id;
-    next();
+    jwt.verify(token, process.env.SECRET_KEY, (error, decoded) => {
+      if (error) {
+        if (error.name === "TokenExpiredError") {
+          return res.status(401).json({ message: "Token expirado" });
+        }
+        console.log(error, decoded);
+        return res.status(401).json({ message: "Token no válido" });
+      }
+      req.userId = decoded.id;
+      next();
+    });
   } catch (error) {
-    console.error(error);
+    console.error("Error al validar el token:", error);
     res.status(500).json({ message: "Error al validar el token" });
   }
 };
