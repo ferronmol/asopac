@@ -1,3 +1,4 @@
+import { timeStamp } from "console";
 import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
@@ -30,6 +31,10 @@ const RegisterAssociationSchema = new Schema(
         },
         message: "La contraseña debe tener al menos 6 caracteres",
       },
+    },
+    timeStamp: {
+      type: Date,
+      default: Date.now,
     },
   },
   { collection: "Associations" } //nombre de la colección en la base de datos
