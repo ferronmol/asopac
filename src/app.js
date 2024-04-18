@@ -4,8 +4,10 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 
-const app = express();
 import authRoutes from "./routes/auth.routes.js";
+import userRoutes from "./routes/tasks.routes.js";
+
+const app = express();
 
 // Middleware
 
@@ -16,4 +18,5 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(cookieParser());
 
 app.use("/v1", authRoutes);
+app.use("/v1", userRoutes);
 export default app;

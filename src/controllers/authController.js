@@ -77,9 +77,30 @@ export function logout(req, res) {
   res.status(200).json({ message: "Sesión cerrada" });
 }
 
-export function profile(req, res) {
-  res.status(200).json({ message: "Perfil de la asociación" });
-}
+export const profile = async (req, res) => {
+  try {
+    const associationFound = await RegisterAssociation.findById(req.userId);
+    if (!associationFound) {
+      return res.status(404).json({ message: "Asociación no encontrada" });
+    }
+    return res.status(200).json({
+      message: "Perfil de la asociación",
+      data: {
+        id: associationFound._id,
+        associationName: associationFound.associationName,
+        email: associationFound.email,
+        createdAt: associationFound.timeStamp,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Error al obtener el perfil de la asociación",
+      error: error.message,
+    });
+  }
+};
+
 export default {
   register,
   login,

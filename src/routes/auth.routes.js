@@ -13,6 +13,6 @@ router.post("/register", register);
 router.post("/login", login);
 router.post("/logout", logout);
 
-router.get(/profile/, authRequired, profile);
+router.get(/profile/, authRequired, profile); // Ruta protegida
 
 export default router;
