@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth.routes.js";
-import userRoutes from "./routes/tasks.routes.js";
+import userRoutes from "./routes/users.routes.js";
 
 const app = express();
 
