@@ -1,25 +1,37 @@
 import User from "../models/userModel.js";
+import bcrpt from "bcryptjs";
 
 export const getUsers = async (req, res) => {
-  const users = await User.find();
-  res.json(users);
+  const Users = await User.find();
+  res.json(Users);
 };
 export const createUser = async (req, res) => {
   const { username, email, password, role } = req.body;
   //obtener el ID de la asociación desde el token para asignarlo al usuario
   const associationId = req.userId;
   try {
+    const passwordHash = await bcrpt.hash(password, 10);
     const newUser = new User({
       username,
       email,
-      password,
+      password: passwordHash,
       role,
       association: associationId,
+      patient: null,
     });
     const userSaved = await newUser.save();
-    res
-      .status(201)
-      .json({ message: "Usuario creado exitosamente", user: userSaved });
+    res.status(201).json({
+      message: "Usuario creado exitosamente",
+      data: {
+        id: userSaved._id,
+        username: userSaved.username,
+        email: userSaved.email,
+        role: userSaved.role,
+        association: userSaved.association,
+        patient: userSaved.patient,
+        createdAt: userSaved.timeStamp,
+      },
+    });
   } catch (error) {
     console.error(error);
     res
@@ -35,7 +47,10 @@ export const getUserById = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
-    res.json("Usuario encontrado, user");
+    res.status(200).json({
+      message: "Usuario encontrado",
+      user: user,
+    });
   } catch (error) {
     console.error(error);
     res
