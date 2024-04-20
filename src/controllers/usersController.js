@@ -6,12 +6,15 @@ export const getUsers = async (req, res) => {
 };
 export const createUser = async (req, res) => {
   const { username, email, password, role } = req.body;
+  //obtener el ID de la asociación desde el token para asignarlo al usuario
+  const associationId = req.userId;
   try {
     const newUser = new User({
       username,
       email,
       password,
       role,
+      association: associationId,
     });
     const userSaved = await newUser.save();
     res

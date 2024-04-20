@@ -36,6 +36,11 @@ const UserSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Patient",
     },
+    //relacion con la asociacion
+    association: {
+      type: Schema.Types.ObjectId,
+      ref: "RegisterAssociation", //nombre del modelo de la asociación
+    },
     role: {
       type: String,
       default: "user",
@@ -48,7 +53,6 @@ const UserSchema = new Schema(
       updatedAt: "updated_at",
     },
   },
-  registerAss
 
   { collection: "Users" } //nombre de la colección en la base de datos
 );
