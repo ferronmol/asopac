@@ -12,7 +12,8 @@
     "mongoose": "^8.3.1",
     "morgan": "^1.10.0",
     "node": "^18.20.2",
-    "sequelize": "^6.37.3"
+    "sequelize": "^6.37.3",
+    "zod": "^3.22.5"
   },
   "name": "asopac",
   "version": "1.0.0",
