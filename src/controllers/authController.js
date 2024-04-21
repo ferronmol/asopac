@@ -11,6 +11,8 @@ export const register = async (req, res) => {
       associationName,
       email,
       password: passwordHash,
+      address: req.body.adress || null,
+      phone: req.body.phone || null,
     });
 
     const savedAssociation = await newRegisterAssociation.save();

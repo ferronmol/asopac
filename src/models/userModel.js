@@ -40,18 +40,26 @@ const UserSchema = new Schema(
     association: {
       type: Schema.Types.ObjectId,
       ref: "RegisterAssociation", //nombre del modelo de la asociación
+      required: false,
     },
     role: {
       type: String,
       default: "user",
+      enum: ["user", "admin"],
+      required: false,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      inmutable: true,
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now,
     },
   },
-  //Fecha de creación del usuario
   {
-    timeStamps: {
-      createdAt: "created_at",
-      updatedAt: "updated_at",
-    },
+    timestamps: true,
   },
 
   { collection: "Users" } //nombre de la colección en la base de datos

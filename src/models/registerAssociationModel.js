@@ -1,4 +1,4 @@
-import { timeStamp } from "console";
+import { create } from "domain";
 import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
@@ -32,10 +32,25 @@ const RegisterAssociationSchema = new Schema(
         message: "La contraseña debe tener al menos 6 caracteres",
       },
     },
-    timeStamp: {
+    address: {
+      type: Schema.Types.ObjectId,
+      ref: "Address",
+    },
+    phone: {
+      type: String,
+      check(value) {
+        return value.length >= 9;
+      },
+      trim: true,
+      message: "El teléfono debe tener al menos 9 caracteres",
+    },
+    createdAt: {
       type: Date,
       default: Date.now,
     },
+  },
+  {
+    timestamps: true,
   },
   { collection: "Associations" } //nombre de la colección en la base de datos
 );
