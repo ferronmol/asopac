@@ -1,4 +1,3 @@
-import exp from "constants";
 import zod from "zod";
 
 const registerSchema = zod.object({

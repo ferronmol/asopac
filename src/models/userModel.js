@@ -15,7 +15,7 @@ const UserSchema = new Schema(
       unique: true,
       validate: {
         validator: (value) => {
-          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+          return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
         },
         message: "Formato de correo electrónico inválido",
       },
@@ -39,7 +39,7 @@ const UserSchema = new Schema(
     //relacion con la asociacion
     association: {
       type: Schema.Types.ObjectId,
-      ref: "RegisterAssociation", //nombre del modelo de la asociación
+      ref: "Association",
       required: false,
     },
     role: {
