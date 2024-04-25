@@ -43,7 +43,7 @@ const loginSchema = zod.object({
   password: zod
     .string({ required_error: "La contraseña es requerida" })
     .min(6, { message: "La contraseña debe tener al menos 6 caracteres" })
-    .max(40, { message: "La contraseña debe tener máximo 40 caracteres" }),
+    .max(12, { message: "La contraseña debe tener máximo 12 caracteres" }),
 });
 
 export { registerSchema, loginSchema };
