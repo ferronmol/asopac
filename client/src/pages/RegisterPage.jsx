@@ -1,17 +1,34 @@
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { registerRequest } from "../api/auth";
 
 function RegisterPage() {
   const { register, handleSubmit } = useForm();
+  const [successMessage, setSuccessMessage] = useState("");
+
   const onSubmit = async (data) => {
-    console.log(data);
+    console.log("Datos del formulario: ", data);
+    try {
+      const res = await registerRequest(data);
+      console.log("Respuesta del servidor: ", res);
+      setSuccessMessage(res.data.message);
+    } catch (error) {
+      console.log("Error del servidor: ", error);
+    }
   };
+
   return (
-    <div>
-      <h1 className="text-center mt-5">
-        Página de registro de Asociaciones de Pacientes
+    <div className="bg-zinc-800 max-w-lg p-10 rounded-md mx-auto mt-10">
+      <h1 className="text-center mt-5 font-serif text-2xl font-bold">
+        Registro de Asociaciones de Pacientes
       </h1>
+      {successMessage && (
+        <div className="alert alert-success mt-5" role="alert">
+          {successMessage}
+        </div>
+      )}
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit)} // Llama a la función onSubmit
         className="container mt-5 w-50 mx-auto border p-5 rounded-md"
       >
         <div className="mb-5">
@@ -20,7 +37,7 @@ function RegisterPage() {
           </label>
           <input
             type="text"
-            className="w-full bg-orange-700 text-white, px-4 py-2 rounded-md"
+            className="w-full bg-orange-700 text-white, px-4 py-2 rounded-md mt-1"
             id="associationName"
             {...register("associationName", {
               required: true,
@@ -35,7 +52,7 @@ function RegisterPage() {
           </label>
           <input
             type="email"
-            className="w-full bg-orange-700 text-white, px-4 py-2 rounded-md"
+            className="w-full bg-orange-700 text-white, px-4 py-2 rounded-md mt-1"
             id="email"
             {...register("email", {
               required: true,
@@ -51,7 +68,7 @@ function RegisterPage() {
           </label>
           <input
             type="password"
-            className="w-full bg-orange-700 text-white, px-4 py-2 rounded-md"
+            className="w-full bg-orange-700 text-white, px-4 py-2 rounded-md mt-1"
             id="password"
             {...register("password", {
               required: true,
