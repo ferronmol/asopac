@@ -17,7 +17,11 @@ export const register = async (req, res) => {
 
     const savedAssociation = await newRegisterAssociation.save();
     const token = await createAccessToken({ id: savedAssociation._id });
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      sameSite: "none",
+      secure: true,
+    });
+
     res.status(201).json({
       message: "Asociación registrada exitosamente",
       data: {

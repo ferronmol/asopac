@@ -1,6 +1,12 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:9000/v1" });
+const API = axios.create({
+  baseURL: "http://localhost:9000/v1",
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 export const registerRequest = async (asociacion) => {
   try {
