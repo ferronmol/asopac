@@ -1,6 +1,7 @@
 import RegisterAssociation from "../models/registerAssociationModel.js";
 import bcrypt from "bcryptjs";
 import { createAccessToken } from "../libs/jwt.js";
+import { formatDate } from "../libs/formatDate.js";
 
 export const register = async (req, res) => {
   const { associationName, email, password } = req.body;
@@ -22,13 +23,16 @@ export const register = async (req, res) => {
       secure: true,
     });
 
+    //formateo la fecha de creación
+    const formattedDate = formatDate(savedAssociation.createdAt);
+
     res.status(201).json({
       message: "Asociación registrada exitosamente",
       data: {
         id: savedAssociation._id,
         associationName: savedAssociation.associationName,
         email: savedAssociation.email,
-        createdAt: savedAssociation.timeStamp,
+        createdAt: formattedDate,
       },
     });
   } catch (error) {

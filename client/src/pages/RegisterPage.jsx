@@ -1,15 +1,20 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { registerRequest } from "../api/auth";
+//import { registerRequest } from "../api/auth";
+import { useAuth } from "../context/AuthContext";
 
 function RegisterPage() {
   const { register, handleSubmit } = useForm();
+  const { signup, asociacion } = useAuth();
+  console.log("Asociación: ", asociacion);
   const [successMessage, setSuccessMessage] = useState("");
 
   const onSubmit = async (data) => {
-    console.log("Datos del formulario: ", data);
+    //console.log("Datos del formulario: ", data);
     try {
-      const res = await registerRequest(data);
+      data.createdAt = new Date();
+      const res = await signup(data);
+
       console.log("Respuesta del servidor: ", res);
       setSuccessMessage(res.data.message);
     } catch (error) {
@@ -24,7 +29,9 @@ function RegisterPage() {
       </h1>
       {successMessage && (
         <div className="alert alert-success mt-5" role="alert">
-          {successMessage}
+          {successMessage && successMessage.data && (
+            <p>{successMessage.data.message - successMessage.data.timeStamp}</p>
+          )}
         </div>
       )}
       <form

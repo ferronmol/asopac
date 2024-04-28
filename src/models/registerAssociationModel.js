@@ -46,7 +46,8 @@ const RegisterAssociationSchema = new Schema(
     },
     createdAt: {
       type: Date,
-      default: Date.now,
+      // En zona horaria UTC + 2
+      default: () => new Date(Date.now() + 7200000),
     },
   },
   {
