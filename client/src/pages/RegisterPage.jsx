@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-//import { registerRequest } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
   const { register, handleSubmit } = useForm();
-  const { signup, asociacion } = useAuth();
-  console.log("Asociación: ", asociacion);
+  const { signup, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState("");
 
   const onSubmit = async (data) => {
@@ -15,8 +15,15 @@ function RegisterPage() {
       data.createdAt = new Date();
       const res = await signup(data);
 
-      console.log("Respuesta del servidor: ", res);
-      setSuccessMessage(res.data.message);
+      if (res.status === 201) {
+        const associationName = res.data.data.associationName;
+        setSuccessMessage(res.data.message);
+        if (isAuthenticated === true) {
+          navigate(`/association/${associationName}`);
+        } else {
+          console.log("Respuesta del servidor: ", res);
+        }
+      }
     } catch (error) {
       console.log("Error del servidor: ", error);
     }
@@ -29,9 +36,7 @@ function RegisterPage() {
       </h1>
       {successMessage && (
         <div className="alert alert-success mt-5" role="alert">
-          {successMessage && successMessage.data && (
-            <p>{successMessage.data.message - successMessage.data.timeStamp}</p>
-          )}
+          {successMessage}
         </div>
       )}
       <form

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
+import AssociationPage from "./pages/AssociationPage";
 
 function App() {
   return (
@@ -13,6 +14,10 @@ function App() {
             element={<h1 className="text-center mt-5">Bienvenido a Asopac </h1>}
           />
           <Route path="/association/register" element={<RegisterPage />} />
+          <Route
+            path="/association/:associationName"
+            element={<AssociationPage />}
+          />
           <Route path="/association/login" element={<LoginPage />} />
           <Route
             path="/association/profile"

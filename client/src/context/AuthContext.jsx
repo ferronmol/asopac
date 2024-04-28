@@ -13,12 +13,16 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [asociacion, setAsociacion] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const signup = async (asociacionData) => {
     try {
       const response = await registerRequest(asociacionData);
+      console.log("Respuesta de asociacion registrada: ", response.data);
 
-      setAsociacion(response.data);
+      setAsociacion(response.data.data); // Guarda la asociación en el estado
+      setIsAuthenticated(true); // Cambia el estado de autenticación a true
+
       return response;
     } catch (error) {
       console.log(error);
@@ -30,6 +34,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         signup,
         asociacion,
+        isAuthenticated,
       }}
     >
       {children}
