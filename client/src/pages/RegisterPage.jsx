@@ -119,7 +119,7 @@ function RegisterPage() {
           />
           {errors.password && (
             <span className="text-red-600">
-              Este campo es requerido con 6 caracteres"
+              Este campo es requerido con 6 caracteres mínimo
             </span>
           )}
         </div>
