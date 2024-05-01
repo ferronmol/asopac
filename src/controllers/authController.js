@@ -2,10 +2,30 @@ import RegisterAssociation from "../models/registerAssociationModel.js";
 import bcrypt from "bcryptjs";
 import { createAccessToken } from "../libs/jwt.js";
 import { formatDate } from "../libs/formatDate.js";
+import { error } from "console";
 
 export const register = async (req, res) => {
   const { associationName, email, password } = req.body;
+  const errors = [];
   try {
+    //primero que busque si ya existe una asociación con el mismo correo
+    const associationFound = await RegisterAssociation.findOne({
+      email,
+    });
+    if (associationFound) {
+      errors.push("  El correo electrónico ya está registrado    ");
+      //tampooco se puede registrar una asociación con el mismo nombre
+      const associationNameFound = await RegisterAssociation.findOne({
+        associationName,
+      });
+      if (associationNameFound) {
+        errors.push(" El nombre de la asociación ya está registrado ");
+      }
+      if (errors.length > 0) {
+        return res.status(400).json({ message: errors });
+      }
+    }
+
     const passwordHash = await bcrypt.hash(password, 10);
 
     const newRegisterAssociation = new RegisterAssociation({

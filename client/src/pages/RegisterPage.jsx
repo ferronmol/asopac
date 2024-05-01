@@ -4,8 +4,13 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
-  const { register, handleSubmit } = useForm();
-  const { signup, isAuthenticated } = useAuth();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const { signup, isAuthenticated, errors: registerErrors } = useAuth();
+  //console.log("Errores de registro: ", registerErrors);
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -21,11 +26,13 @@ function RegisterPage() {
         if (isAuthenticated === true) {
           navigate(`/association/${associationName}`);
         } else {
-          console.log("Respuesta del servidor: ", res);
+          console.log("Fallo la autenticación");
         }
       }
     } catch (error) {
-      console.log("Error del servidor: ", error);
+      if (error.response && error.response.data) {
+        console.log("Error de respuesta: ", error.response.data);
+      }
     }
   };
 
@@ -39,6 +46,19 @@ function RegisterPage() {
           {successMessage}
         </div>
       )}
+      {registerErrors && (
+        <div
+          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-5"
+          role="alert"
+        >
+          <ul>
+            {registerErrors.map((error, index) => (
+              <li key={index}>{error.trim()}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <form
         onSubmit={handleSubmit(onSubmit)} // Llama a la función onSubmit
         className="container mt-5 w-50 mx-auto border p-5 rounded-md"
@@ -57,6 +77,9 @@ function RegisterPage() {
               maxLenght: 50,
             })}
           />
+          {errors.associationName && (
+            <span className="text-red-600">Este campo es requerido</span>
+          )}
         </div>
         <div className="mb-5">
           <label htmlFor="email" className="form-label">
@@ -73,6 +96,9 @@ function RegisterPage() {
               pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, //Coincide validación del backend
             })}
           />
+          {errors.email && (
+            <span className="text-red-600">Este campo es requerido</span>
+          )}
         </div>
         <div className="mb-5">
           <label htmlFor="password" className="form-label">
@@ -82,12 +108,20 @@ function RegisterPage() {
             type="password"
             className="w-full bg-orange-700 text-white, px-4 py-2 rounded-md mt-1"
             id="password"
+            name="password"
+            autoComplete="off"
+            placeholder="* * * * * *"
             {...register("password", {
               required: true,
-              minLenght: 6,
-              maxLenght: 12,
+              minLength: 6,
+              maxLength: 20,
             })}
           />
+          {errors.password && (
+            <span className="text-red-600">
+              Este campo es requerido con 6 caracteres"
+            </span>
+          )}
         </div>
         <button
           type="submit"
