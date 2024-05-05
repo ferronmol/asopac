@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function LoginPage() {
   const {
@@ -29,6 +30,12 @@ function LoginPage() {
       }
     }
   };
+  //Uso un useEffect para redirigir al usuario a la página de la asociación si ya está autenticado
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/association/${associationName}");
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className="bg-zinc-800 max-w-lg p-10 rounded-md mx-auto mt-10">

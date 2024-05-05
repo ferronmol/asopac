@@ -67,22 +67,32 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
+  const errors = [];
   try {
+    //primero ve si existe la asociación
     const associationFound = await RegisterAssociation.findOne({ email });
     if (!associationFound) {
-      return res
-        .status(400)
-        .json({ message: "Correo electrónico o contraseña incorrectos" });
+      errors.push(" Asociación o contraseña incorrecta");
     }
+    //rompo la ejecución si hay este error
+    if (errors.length > 0) {
+      return res.status(400).json({ message: errors });
+    }
+
+    // si existe la asociacion entonces compara la contraseña
+
     const passwordMatch = await bcrypt.compare(
       password,
       associationFound.password
     );
     if (!passwordMatch) {
-      return res
-        .status(400)
-        .json({ message: "Correo electrónico o contraseña incorrectos" });
+      errors.push("  Asociación o contraseña incorrecta    ");
     }
+    if (errors.length > 0) {
+      return res.status(400).json({ message: errors });
+    }
+    //si todo está bien entonces crea el token
+
     const token = await createAccessToken({ id: associationFound._id });
     res.cookie("token", token);
     res.status(200).json({
