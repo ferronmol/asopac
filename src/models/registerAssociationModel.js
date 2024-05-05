@@ -1,4 +1,3 @@
-import { create } from "domain";
 import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
@@ -7,13 +6,15 @@ const RegisterAssociationSchema = new Schema(
   {
     associationName: {
       type: String,
+      trim: true,
+      unique: [true, "El nombre de la asociación ya existe"],
       required: [true, "El nombre de la asociación es obligatorio"],
     },
     email: {
       type: String,
       required: [true, "El correo electrónico es obligatorio"],
       trim: true,
-      unique: true,
+      unique: [true, "El correo electrónico ya está registrado"],
       validate: {
         validator: (value) => {
           return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);

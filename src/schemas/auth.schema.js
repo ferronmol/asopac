@@ -1,4 +1,5 @@
 import zod from "zod";
+import RegisterAssociation from "../models/registerAssociationModel.js";
 
 const registerSchema = zod.object({
   email: zod
@@ -44,6 +45,25 @@ const loginSchema = zod.object({
     .string({ required_error: "La contraseña es requerida" })
     .min(6, { message: "La contraseña debe tener al menos 6 caracteres" })
     .max(12, { message: "La contraseña debe tener máximo 12 caracteres" }),
+});
+
+const checkAssociationExists = async (associationName) => {
+  const existingAssociation = await RegisterAssociation.findOne({
+    associationName,
+  });
+  return !!existingAssociation;
+};
+const checkEmailExists = async (email) => {
+  const existingEmail = await RegisterAssociation.findOne({ email });
+  return !!existingEmail;
+};
+registerSchema.extend({
+  associationName: zod.string().refine(checkAssociationExists, {
+    message: "El nombre de la asociación ya existe",
+  }),
+  email: zod.string().refine(checkEmailExists, {
+    message: "El correo electrónico ya está registrado",
+  }),
 });
 
 export { registerSchema, loginSchema };

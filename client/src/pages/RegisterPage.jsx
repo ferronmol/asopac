@@ -33,6 +33,9 @@ function RegisterPage() {
       if (error.response && error.response.data) {
         console.log("Error de respuesta: ", error.response.data);
       }
+      if (error.response && error.response.data.message) {
+        console.log("Mensaje de error: ", error.response.data.message);
+      }
     }
   };
 

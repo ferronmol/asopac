@@ -9,10 +9,11 @@ const API = axios.create({
 });
 
 export const registerRequest = async (asociacion) => {
-  try {
-    const response = await API.post("/register", asociacion);
-    return response;
-  } catch (error) {
-    throw error; // Re-lanzamos el error para manejarlo en el contexto
-  }
+  const response = await API.post("/register", asociacion);
+  return response;
+};
+
+export const loginRequest = async (asociacion) => {
+  const response = await API.post("/login", asociacion);
+  return response;
 };

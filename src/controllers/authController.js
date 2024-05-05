@@ -14,16 +14,16 @@ export const register = async (req, res) => {
     });
     if (associationFound) {
       errors.push("  El correo electrónico ya está registrado    ");
-      //tampooco se puede registrar una asociación con el mismo nombre
-      const associationNameFound = await RegisterAssociation.findOne({
-        associationName,
-      });
-      if (associationNameFound) {
-        errors.push(" El nombre de la asociación ya está registrado ");
-      }
-      if (errors.length > 0) {
-        return res.status(400).json({ message: errors });
-      }
+    }
+    //tampooco se puede registrar una asociación con el mismo nombre
+    const associationNameFound = await RegisterAssociation.findOne({
+      associationName,
+    });
+    if (associationNameFound) {
+      errors.push("  El nombre de la asociación ya existe    ");
+    }
+    if (errors.length > 0) {
+      return res.status(400).json({ message: errors });
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
@@ -37,6 +37,7 @@ export const register = async (req, res) => {
     });
 
     const savedAssociation = await newRegisterAssociation.save();
+
     const token = await createAccessToken({ id: savedAssociation._id });
     res.cookie("token", token, {
       sameSite: "none",
