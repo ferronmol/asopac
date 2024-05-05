@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function LoginPage() {
   const {
@@ -109,6 +110,12 @@ function LoginPage() {
           Entrar
         </button>
       </form>
+      <p className="text-center mt-5">
+        ¿No tienes cuenta?{" "}
+        <Link to="/association/register" className="text-blue-500">
+          Regístrate
+        </Link>
+      </p>
     </div>
   );
 }

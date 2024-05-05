@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import { registerRequest, loginRequest } from "../api/auth";
 
 export const AuthContext = createContext();
@@ -43,15 +43,24 @@ export const AuthProvider = ({ children }) => {
       setErrors(null); // Resetea el estado de errores
       return response;
     } catch (error) {
-      console.error(
-        "Error al hacer login de la asociación:",
-        error.response.data
-      );
-      setErrors(error.response.data.message); // Guarda el mensaje de error en el estado
+      if (Array.isArray(error.response.data.message)) {
+        return setErrors(error.response.data.message);
+      }
 
-      return null; // Devolvemos null en caso de error
+      setErrors([error.response.data.message]);
     }
   };
+  // useEffect para borra los errores después de 5 segundos
+  useEffect(() => {
+    if (errors && errors.length > 0) {
+      const timer = setTimeout(() => {
+        setErrors(null);
+      }, 4000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [errors]);
 
   return (
     <AuthContext.Provider
