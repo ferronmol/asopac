@@ -62,6 +62,27 @@ export const AuthProvider = ({ children }) => {
     }
   }, [errors]);
 
+  //useEffect para ver si el backend tiene la cookie de autenticación
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch("http://localhost:9000/v1/auth/me", {
+          method: "GET",
+          credentials: "include",
+        });
+        const data = await response.json();
+        console.log("Datos de la autenticación: ", data);
+        if (data.data) {
+          setAsociacion(data.data);
+          setIsAuthenticated(true);
+        }
+      } catch (error) {
+        console.error("Error al verificar la autenticación: ", error);
+      }
+    };
+    checkAuth();
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
