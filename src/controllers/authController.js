@@ -2,7 +2,7 @@ import RegisterAssociation from "../models/registerAssociationModel.js";
 import bcrypt from "bcryptjs";
 import { createAccessToken } from "../libs/jwt.js";
 import { formatDate } from "../libs/formatDate.js";
-import { error } from "console";
+import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   const { associationName, email, password } = req.body;
@@ -94,7 +94,11 @@ export const login = async (req, res) => {
     //si todo está bien entonces crea el token
 
     const token = await createAccessToken({ id: associationFound._id });
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      sameSite: "none",
+      secure: true,
+      httpOnly: true,
+    });
     res.status(200).json({
       message: "Inicio de sesión exitoso",
       data: {
@@ -142,9 +146,47 @@ export const profile = async (req, res) => {
   }
 };
 
+export const verifyToken = async (req, res) => {
+  try {
+    const { token } = req.cookies;
+
+    if (!token) {
+      return res.status(401).json({ message: "No autorizado" });
+    }
+
+    jwt.verify(token, process.env.SECRET, async (error, asociacion) => {
+      if (error) {
+        return res.status(401).json({ message: "Token no válido" });
+      }
+      const associationFound = await RegisterAssociation.findById(
+        asociacion.id
+      );
+      if (!associationFound) {
+        return res.status(404).json({ message: "Asociación no encontrada" });
+      }
+      return res.status(200).json({
+        message: "Perfil de la asociación",
+        data: {
+          id: associationFound._id,
+          associationName: associationFound.associationName,
+          email: associationFound.email,
+          createdAt: associationFound.timeStamp,
+        },
+      });
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Error al verificar el token",
+      error: error.message,
+    });
+  }
+};
+
 export default {
   register,
   login,
   logout,
   profile,
+  verifyToken,
 };

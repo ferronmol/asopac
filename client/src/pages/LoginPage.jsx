@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function LoginPage() {
@@ -13,14 +13,17 @@ function LoginPage() {
   const { signin, isAuthenticated, errors: loginErrors } = useAuth();
   const navigate = useNavigate();
 
+  //estado para almacenar el nombre de la asociación
+  const [associationName, setAssociationName] = useState(null);
+
   const onSubmit = async (data) => {
     //console.log(data);
     try {
       const res = await signin(data);
       if (res.status === 200) {
-        const associationName = res.data.data.associationName;
+        setAssociationName(res.data.data.associationName);
         if (isAuthenticated === true) {
-          navigate(`/association/${associationName}`);
+          navigate(`/association/${associationName}/private`);
         } else {
           console.log("Fallo la autenticación");
         }
@@ -34,9 +37,9 @@ function LoginPage() {
   //Uso un useEffect para redirigir al usuario a la página de la asociación si ya está autenticado
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/association/${associationName}");
+      navigate(`/association/${associationName}`);
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, associationName]);
 
   return (
     <div className="bg-zinc-800 max-w-lg p-10 rounded-md mx-auto mt-10">

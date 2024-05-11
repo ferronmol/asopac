@@ -9,6 +9,7 @@ function RegisterPage() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const { signup, isAuthenticated, errors: registerErrors } = useAuth();
   //console.log("Errores de registro: ", registerErrors);
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function RegisterPage() {
         const associationName = res.data.data.associationName;
         setSuccessMessage(res.data.message);
         if (isAuthenticated === true) {
-          navigate(`/association/${associationName}`);
+          navigate(`/association/${encodeURIComponent(associationName)}`);
         } else {
           console.log("Fallo la autenticación");
         }

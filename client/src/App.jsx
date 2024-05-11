@@ -29,6 +29,10 @@ function App() {
 
           {/* Rutas protegidas de la asociación y gestion de usuarios */}
           <Route element={<ProtectedRoute />}>
+            <Route
+              path="/association/:associationName/private"
+              element={<AssociationPage />}
+            />
             <Route path="/association/profile" element={<ProfilePage />} />
             <Route path="/users" element={<UserPage />} />
             <Route path="/users/:Id" element={<EditUserPage />} />
