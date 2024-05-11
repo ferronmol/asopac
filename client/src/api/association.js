@@ -23,5 +23,5 @@ export const getAssociationInfoRequest = async (associationName) => {
  */
 export const getAllAssociationsRequest = async () => {
   const response = await API.get("/association");
-  return response;
+  return response.data;
 };
