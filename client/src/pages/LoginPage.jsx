@@ -37,6 +37,12 @@ function LoginPage() {
   //Uso un useEffect para redirigir al usuario a la página de la asociación si ya está autenticado
   useEffect(() => {
     if (isAuthenticated) {
+      console.log(
+        "Autenticado cambiado:",
+        isAuthenticated,
+        "Redirigiendo a: ",
+        associationName
+      );
       navigate(`/association/${associationName}`);
     }
   }, [isAuthenticated, navigate, associationName]);

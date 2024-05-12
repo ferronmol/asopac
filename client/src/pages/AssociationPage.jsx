@@ -2,6 +2,7 @@ import { useAuth } from "../context/AuthContext";
 import { useParams } from "react-router-dom";
 import { getAssociationInfoRequest } from "../api/association";
 import { useEffect, useState } from "react";
+import formatDate from "../assets/formatDate";
 
 function AssociationPage() {
   const { associationName } = useParams(); // Obtener el nombre de la asociación de los parámetros de la ruta
@@ -13,8 +14,9 @@ function AssociationPage() {
     const fetchAssociationInfo = async () => {
       try {
         const response = await getAssociationInfoRequest(associationName);
-        console.log("Información de la asociación: ", response);
         setAsociacionInfo(response.data);
+        //console.log("Información de la asociación: ", response.data);
+        console.log(asociacion);
       } catch (error) {
         console.error(
           "Error al obtener la información de la asociación: ",
@@ -28,7 +30,7 @@ function AssociationPage() {
   // No necesita autenticacion para visualziar la información publica de la asociación pero si la privada
 
   if (!isAuthenticated) {
-    console.log("perfil publico", asociacionInfo);
+    console.log("Está en perfil publico", asociacionInfo);
     return (
       <div>
         <h1 className="text-center mt-5">
@@ -63,30 +65,41 @@ function AssociationPage() {
     );
   }
   // Si esta autenticado muestra la información privada de la asociación
-  console.log("perfil privado", asociacion);
+  console.log("Está en perfil privado", asociacionInfo);
+  console.log(asociacion);
+  const formattedDate = formatDate(asociacion.createdAt);
   return (
     <div>
       <h1 className="text-center mt-5">
-        Bienvenido a su zona privada{" "}
-        <span className="text-red-700 p-2 bg-orange-400 ">PRIVADA</span> de{" "}
-        {associationName}
+        Bienvenido a su zona{" "}
+        <span className="text-red-700 p-2 bg-orange-400 rounded-sm">
+          PRIVADA
+        </span>{" "}
+        de {associationName}
       </h1>
       <div>
-        <h3>Información de la Asociación:</h3>
-        <p>ID: {asociacion.id}</p>
-        <p>Nombre: {asociacion.associationName}</p>
-        <p>Email: {asociacion.email}</p>
-        <p>Telefono: {asociacion.phone}</p>
-        {asociacionInfo.address && (
-          <p className="text-sm text-orange-600">
-            Dirección: {asociacionInfo.address.street},{" "}
-            {asociacionInfo.address.number}. {asociacionInfo.address.city}{" "}
-            {" ("}
-            {asociacionInfo.address.state}
-            {")"} {asociacionInfo.address.postalCode}
-          </p>
+        {asociacionInfo && (
+          <>
+            <h2>Información de la Asociación:</h2>
+            <p>ID: {asociacion.id}</p>
+            <p>Nombre: {asociacionInfo.associationName}</p>
+            <p>Email: {asociacionInfo.email}</p>
+            <p>Telefono: {asociacionInfo.phone}</p>
+            {asociacionInfo.address && (
+              <p className="text-sm text-orange-600">
+                Dirección: {asociacionInfo.address.street},{" "}
+                {asociacionInfo.address.number}. {asociacionInfo.address.city}{" "}
+                {" ("}
+                {asociacionInfo.address.state}
+                {")"} {asociacionInfo.address.postalCode}
+              </p>
+            )}
+            <p>
+              Asociacion creada:{" "}
+              {asociacion.createdAt ? formattedDate : "Fecha no disponible"}
+            </p>
+          </>
         )}
-        <p>Asociacion creada: {asociacion.createdAt}</p>
       </div>
     </div>
   );

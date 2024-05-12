@@ -105,7 +105,7 @@ export const login = async (req, res) => {
         id: associationFound._id,
         associationName: associationFound.associationName,
         email: associationFound.email,
-        createdAt: associationFound.timeStamp,
+        createdAt: associationFound.createdAt,
       },
     });
   } catch (error) {

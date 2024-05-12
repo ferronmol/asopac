@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
   const [asociacion, setAsociacion] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Función para registrar una asociación
   const signup = async (asociacionData) => {
@@ -81,33 +82,33 @@ export const AuthProvider = ({ children }) => {
 
   //useEffect para verificar si el token es válido
   useEffect(() => {
-    const checkLogin = async () => {
-      try {
-        const token = Cookies.get("token");
-        console.log("Token: ", token);
-        if (!token) {
-          setIsAuthenticated(false);
-          setAsociacion(null);
-          return;
-        }
+    async function checkLogin() {
+      const cookies = Cookies.get();
 
-        const res = await verifyTokenRequest(token);
-        console.log("Respuesta de verificar token: ", res.data.message);
+      if (!cookies.token) {
+        setIsAuthenticated(false);
+        return setAsociacion(null);
+      }
+
+      try {
+        const res = await verifyTokenRequest(cookies.token);
+
         if (!res.data.data) {
           setIsAuthenticated(false);
           setAsociacion(null);
-          Cookies.remove("token");
-        } else {
-          setIsAuthenticated(true);
-          setAsociacion(res.data.data);
+          setLoading(false);
+          return;
         }
+        setIsAuthenticated(true);
+        setAsociacion(res.data.data);
+        setLoading(false);
       } catch (error) {
         console.error("Error al verificar el token", error);
         setIsAuthenticated(false);
         setAsociacion(null);
-        Cookies.remove("token");
+        setLoading(false);
       }
-    };
+    }
     checkLogin();
   }, []);
 
@@ -117,6 +118,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         signup,
         signin,
+        loading,
         asociacion,
         isAuthenticated,
         errors,
