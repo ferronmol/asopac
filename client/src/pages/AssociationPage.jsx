@@ -28,6 +28,7 @@ function AssociationPage() {
   // No necesita autenticacion para visualziar la información publica de la asociación pero si la privada
 
   if (!isAuthenticated) {
+    console.log("perfil publico", asociacionInfo);
     return (
       <div>
         <h1 className="text-center mt-5">
@@ -35,11 +36,26 @@ function AssociationPage() {
         </h1>
         <div className="bg-gray-500 p-5 rounded-md">
           <h3>Información Pública de la Asociación:</h3>
-          {asociacionInfo && ( // Cambio aquí
+          {asociacionInfo && (
             <>
-              <p>Nombre: {asociacionInfo.associationName}</p>{" "}
-              {/* Cambio aquí */}
-              <p>Mail: {asociacionInfo.email}</p> {/* Cambio aquí */}
+              <p className="text-sm text-orange-600">
+                Nombre: {asociacionInfo.associationName}
+              </p>{" "}
+              <p className="text-sm text-orange-600">
+                Mail: {asociacionInfo.email}
+              </p>
+              <p className="text-sm text-orange-600">
+                Teléfono: {asociacionInfo.phone}
+              </p>
+              {asociacionInfo.address && (
+                <p className="text-sm text-orange-600">
+                  Dirección: {asociacionInfo.address.street},{" "}
+                  {asociacionInfo.address.number}. {asociacionInfo.address.city}{" "}
+                  {" ("}
+                  {asociacionInfo.address.state}
+                  {")"} {asociacionInfo.address.postalCode}
+                </p>
+              )}
             </>
           )}
         </div>
@@ -47,6 +63,7 @@ function AssociationPage() {
     );
   }
   // Si esta autenticado muestra la información privada de la asociación
+  console.log("perfil privado", asociacion);
   return (
     <div>
       <h1 className="text-center mt-5">
@@ -58,9 +75,17 @@ function AssociationPage() {
         <h3>Información de la Asociación:</h3>
         <p>ID: {asociacion.id}</p>
         <p>Nombre: {asociacion.associationName}</p>
-        <p>Dirección: {asociacion.address}</p>
-        <p>Correo Electrónico: {asociacion.email}</p>
-        <p>Teléfono: {asociacion.phone}</p>
+        <p>Email: {asociacion.email}</p>
+        <p>Telefono: {asociacion.phone}</p>
+        {asociacionInfo.address && (
+          <p className="text-sm text-orange-600">
+            Dirección: {asociacionInfo.address.street},{" "}
+            {asociacionInfo.address.number}. {asociacionInfo.address.city}{" "}
+            {" ("}
+            {asociacionInfo.address.state}
+            {")"} {asociacionInfo.address.postalCode}
+          </p>
+        )}
         <p>Asociacion creada: {asociacion.createdAt}</p>
       </div>
     </div>

@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/users.routes.js";
+import associationAddressRoutes from "./routes/associationAddress.routes.js";
 import { logCookies } from "./middlewares/cookieLooger.js";
 
 const app = express();
@@ -29,4 +30,5 @@ app.use(logCookies);
 // Routes
 app.use("/v1", authRoutes);
 app.use("/v1", userRoutes);
+app.use("/v1", associationAddressRoutes);
 export default app;

@@ -9,6 +9,7 @@ function HomePage() {
       try {
         const response = await getAllAssociationsRequest();
         setAssociations(response.data);
+        console.log("Asociaciones: ", response.data);
       } catch (error) {
         console.error("Error al obtener las asociaciones: ", error);
       }
@@ -34,7 +35,17 @@ function HomePage() {
               {association.association}
             </h2>
             <p className="text-sm text-gray-600">Email: {association.email}</p>
-            {/* Agrega más campos de información pública aquí si es necesario */}
+            <p className="text-sm text-gray-600">
+              Teléfono: {association.phone}
+            </p>
+            {association.address && (
+              <p className="text-sm text-gray-600">
+                Dirección: {association.address.street},{" "}
+                {association.address.number}. {association.address.city} {" ("}
+                {association.address.state}
+                {")"} {association.address.postalCode}
+              </p>
+            )}
           </div>
         ))}
       </div>

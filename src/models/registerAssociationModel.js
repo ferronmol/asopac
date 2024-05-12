@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Address from "./addressModel.js";
 
 const Schema = mongoose.Schema;
 
@@ -33,10 +34,8 @@ const RegisterAssociationSchema = new Schema(
         message: "La contraseña debe tener al menos 6 caracteres",
       },
     },
-    address: {
-      type: Schema.Types.ObjectId,
-      ref: "Address",
-    },
+    address: Address.schema,
+
     phone: {
       type: String,
       check(value) {

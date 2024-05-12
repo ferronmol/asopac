@@ -15,13 +15,20 @@ export const getAssociationByName = async (req, res) => {
     }
 
     // Si se encuentra la asociación, devolver cierta información pública
-    const { associationName: foundAssociationName, email } = associationFound;
+    const {
+      associationName: foundAssociationName,
+      email,
+      phone,
+      address,
+    } = associationFound;
 
     return res.status(200).json({
       message: "Información pública de la asociación",
       data: {
         associationName,
         email,
+        phone,
+        address,
       },
     });
   } catch (error) {
@@ -45,7 +52,9 @@ export const getAllAssociations = async (req, res) => {
       id: association._id,
       association: association.associationName,
       email: association.email,
-      createdAt: association.timeStamp,
+      phone: association.phone,
+      address: association.address,
+      createdAt: association.createdAt,
     }));
 
     return res.status(200).json({
