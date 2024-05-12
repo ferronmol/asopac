@@ -1,10 +1,11 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { registerRequest, loginRequest, verifyTokenRequest } from "../api/auth";
 import Cookies from "js-cookie";
-import { set } from "mongoose";
+import PropTypes from "prop-types";
 
 export const AuthContext = createContext();
 
+//eslint-disable-next-line
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -111,6 +112,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
+    //utilizo el componente AuthContext.Provider para pasar las funciones y estados a los componentes hijos
     <AuthContext.Provider
       value={{
         signup,
@@ -121,7 +123,11 @@ export const AuthProvider = ({ children }) => {
         signout,
       }}
     >
-      {children}
+      {children} {/* Renderizamos los componentes hijos*/}
     </AuthContext.Provider>
   );
+};
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
