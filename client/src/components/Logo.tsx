@@ -9,7 +9,7 @@ const Logo = () => {
       <img
          src="../../public/images/manos.avif"
         alt="Logo"
-        className="logo w-20 h-20 bg-orange rounded-full"
+        className="logo w-16 h-16 sm:w-24 sm:h-24 rounded-full"
         style = {{borderRadius: "50%"}}
       />
     </div>

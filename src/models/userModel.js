@@ -6,13 +6,15 @@ const UserSchema = new Schema(
   {
     username: {
       type: String,
+      trim: true,
+      unique: [true, "El nombre de usuario ya existe"],
       required: [true, "El nombre de usuario es obligatorio"],
     },
     email: {
       type: String,
       required: [true, "El correo electrónico es obligatorio"],
       trim: true,
-      unique: true,
+      unique: [true, "El correo electrónico ya está registrado"],
       validate: {
         validator: (value) => {
           return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
@@ -50,12 +52,11 @@ const UserSchema = new Schema(
     },
     createdAt: {
       type: Date,
-      default: Date.now,
-      inmutable: true,
+      default: () => new Date(Date.now() + 7200000),
     },
     updatedAt: {
       type: Date,
-      default: Date.now,
+      default: () => new Date(Date.now() + 7200000),
     },
   },
   {

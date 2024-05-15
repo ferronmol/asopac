@@ -2,7 +2,13 @@ import User from "../models/userModel.js";
 import bcrpt from "bcryptjs";
 import { formatDate } from "../libs/formatDate.js";
 
-export const getUsers = async (req, res) => {
+/**
+ * Funcion para obtener todos los usuarios  de una asociación
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
+export const getAllUsers = async (req, res) => {
   try {
     const users = await User.find(
       //Solo los usuarios de la asociación que hace la petición
@@ -20,8 +26,16 @@ export const getUsers = async (req, res) => {
   }
 };
 
-export const createUser = async (req, res) => {
+/**
+ * Función para crear un usuario
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
+
+export const register = async (req, res) => {
   const { username, email, password, role } = req.body; //son los campos requeridos
+
   if (!username || !email || !password) {
     return res.status(400).json({
       message: "Faltan campos obligatorios para crear el usuario",
@@ -62,6 +76,12 @@ export const createUser = async (req, res) => {
   }
 };
 
+/**
+ * función para obtener un usuario por su ID
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 export const getUserById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -81,6 +101,12 @@ export const getUserById = async (req, res) => {
   }
 };
 
+/**
+ *  Función para actualizar un usuario
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 export const updateUser = async (req, res) => {
   const { id } = req.params;
   const { username, email, password } = req.body; //solo se pueden actualizar estos campos
@@ -128,6 +154,11 @@ export const updateUser = async (req, res) => {
   }
 };
 
+/**
+ *  Función para eliminar un usuario
+ * @param {*} req
+ * @param {*} res
+ */
 export const deleteUser = async (req, res) => {
   const { id } = req.params;
   try {
@@ -140,11 +171,52 @@ export const deleteUser = async (req, res) => {
       .json({ message: "Error al eliminar el usuario " + id, error: error });
   }
 };
+/**
+ * Función para autenticar un usuario
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    //validar si el usuario existe
+    const user = await User.findOne({ email })
+      .populate("association")
+      .populate("patient");
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    //validar la contraseña
+    const isValidPassword = await bcrpt.compare(password, user.password);
+    if (!isValidPassword) {
+      return res.status(400).json({ message: "Contraseña incorrecta" });
+    }
+    //generar token
+    const token = user.generateJWT();
+    res.json({
+      message: "Bienvenido",
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        association: user.association,
+        patient: user.patient,
+      },
+      token,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al iniciar sesión", error: error });
+  }
+};
 
 export default {
-  getUsers,
-  createUser,
+  getAllUsers,
+  register,
   getUserById,
   updateUser,
   deleteUser,
+  login,
 };

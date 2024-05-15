@@ -1,30 +1,31 @@
 import { useForm } from "react-hook-form";
-import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
+//import { useAuth } from "../context/UserContext.jsx";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Header from "../components/Header";
 
-function LoginPage() {
+function RegisterUserPage() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { signin, isAuthenticated, errors: loginErrors } = useAuth();
-  const navigate = useNavigate();
 
-  //estado para almacenar el nombre de la asociación
-  const [associationName, setAssociationName] = useState(null);
+  const { signupUser, isAuthenticated, errors: registerErrors } = useAuth();
+  //console.log("Errores de registro: ", registerErrors);
+  const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState("");
 
   const onSubmit = async (data) => {
-    //console.log(data);
+    //console.log("Datos del formulario: ", data);
     try {
-      const res = await signin(data);
-      if (res.status === 200) {
-        setAssociationName(res.data.data.associationName);
+      data.createdAt = new Date();
+      const res = await signupUser(data);
+
+      if (res.status === 201) {
+        const username = res.data.data.username;
+        setSuccessMessage(res.data.message);
         if (isAuthenticated === true) {
-          navigate(`/association/${associationName}/private`);
+          navigate(`/user/${encodeURIComponent(username)}`);
         } else {
           console.log("Fallo la autenticación");
         }
@@ -33,37 +34,30 @@ function LoginPage() {
       if (error.response && error.response.data) {
         console.log("Error de respuesta: ", error.response.data);
       }
+      if (error.response && error.response.data.message) {
+        console.log("Mensaje de error: ", error.response.data.message);
+      }
     }
   };
-  //Uso un useEffect para redirigir al usuario a la página de la asociación si ya está autenticado
-  useEffect(() => {
-    if (isAuthenticated) {
-      console.log(
-        "Autenticado cambiado:",
-        isAuthenticated,
-        "Redirigiendo a: ",
-        associationName
-      );
-      navigate(`/association/${associationName}`);
-    }
-  }, [isAuthenticated, navigate, associationName]);
 
   return (
     <div>
-      <Header />
-
-      <div className="bg-zinc-800 max-w-lg p-10 rounded-md mx-auto mt-10">
+      <div className="bg-zinc-800 max-w-lg p-10 rounded-md mx-auto mt-10 ">
         <h1 className="text-center mt-5 font-serif text-2xl font-bold">
-          Login de Asociaciones de Pacientes
+          Registro de Usuario en Asociaciones de Pacientes
         </h1>
-
-        {loginErrors && (
+        {successMessage && (
+          <div className="alert alert-success mt-5" role="alert">
+            {successMessage}
+          </div>
+        )}
+        {registerErrors && (
           <div
             className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-5"
             role="alert"
           >
             <ul>
-              {loginErrors.map((error, index) => (
+              {registerErrors.map((error, index) => (
                 <li key={index}>{error.trim()}</li>
               ))}
             </ul>
@@ -72,8 +66,26 @@ function LoginPage() {
 
         <form
           onSubmit={handleSubmit(onSubmit)} // Llama a la función onSubmit
-          className="container mt-5 w-50 mx-auto border p-5 rounded-md"
+          className="container mt-5 w-50 mx-auto border p-5 rounded-md "
         >
+          <div className="mb-5">
+            <label htmlFor="username" className="form-label">
+              Nombre de Usuario
+            </label>
+            <input
+              type="text"
+              className="w-full bg-orange-700 text-white, px-4 py-2 rounded-md mt-1"
+              id="username"
+              {...register("username", {
+                required: true,
+                minLength: 3,
+                maxLength: 50,
+              })}
+            />
+            {errors.username && (
+              <span className="text-red-600">Este campo es requerido</span>
+            )}
+          </div>
           <div className="mb-5">
             <label htmlFor="email" className="form-label">
               Correo Electrónico:
@@ -90,7 +102,7 @@ function LoginPage() {
               })}
             />
             {errors.email && (
-              <span className="text-red-600">Introduzca un mail válido</span>
+              <span className="text-red-600">Este campo es requerido</span>
             )}
           </div>
           <div className="mb-5">
@@ -120,18 +132,12 @@ function LoginPage() {
             type="submit"
             className="btn bg-green-700 text-white, px-4 py-2 rounded-lg"
           >
-            Entrar
+            Registrarse
           </button>
         </form>
-        <p className="text-center mt-5">
-          ¿No tienes cuenta?{" "}
-          <Link to="/association/register" className="text-blue-500">
-            Regístrate
-          </Link>
-        </p>
       </div>
     </div>
   );
 }
 
-export default LoginPage;
+export default RegisterUserPage;
