@@ -13,17 +13,17 @@ const NavLinks = () => {
 
     return (
         <>
-        <NavLink to="/" className={activeStyleCallback}>Inicio</NavLink>
-        <NavLink to="/association/register"className={activeStyleCallback}>Crear Asociación</NavLink>
-        <NavLink to="/association/login" className={activeStyleCallback}> Entrar en Asociación</NavLink>     
-        <NavLink to="/association/about" className={activeStyleCallback}>Sobre Asopac</NavLink> 
+        <NavLink to="users/register/" className={activeStyleCallback}>Registrar Usuario</NavLink>
+
+        <NavLink to="/users/login" className={activeStyleCallback}>Iniciar Sesión</NavLink>
+        <NavLink to="/users/about" className={activeStyleCallback}>Sobre Nosotros</NavLink>
         
         </>
 
     )
 }
 
-const Nav = () => {
+const AssociationNav = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleNavbar = () => {
@@ -52,4 +52,4 @@ const Nav = () => {
         </>
     )
 }
-export default Nav;
+export default AssociationNav;

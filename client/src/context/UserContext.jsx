@@ -1,6 +1,7 @@
-import { createContext, useState, useContext } from "react";
-import { registerRequest, loginRequest } from "../api/user";
+/*import { createContext, useState, useContext } from "react";
+import { registerRequest } from "../api/user";
 import PropTypes from "prop-types";
+import { useEffect } from "react";
 
 export const UserContext = createContext();
 
@@ -30,31 +31,25 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const loginUser = async (userData) => {
-    try {
-      const response = await loginRequest(userData);
-      setUser(response.data.data);
-      setErrors(null);
-      return response;
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error.response.data);
-      setErrors(error.response.data.message);
-      return null;
+  // useEffect para borra los errores después de 5 segundos
+  useEffect(() => {
+    if (errors && errors.length > 0) {
+      const timer = setTimeout(() => {
+        setErrors(null);
+      }, 4000);
+      return () => {
+        clearTimeout(timer);
+      };
     }
-  };
-
-  const logoutUser = () => {
-    setUser(null);
-  };
+  }, [errors]);
 
   return (
     <UserContext.Provider
       value={{
         user,
+        asociacion: user,
         errors,
         registerUser,
-        loginUser,
-        logoutUser,
       }}
     >
       {children}
@@ -65,3 +60,4 @@ export const UserProvider = ({ children }) => {
 UserProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
+*/

@@ -68,18 +68,6 @@ export const AuthProvider = ({ children }) => {
     Cookies.remove("token");
   };
 
-  // useEffect para borra los errores después de 5 segundos
-  useEffect(() => {
-    if (errors && errors.length > 0) {
-      const timer = setTimeout(() => {
-        setErrors(null);
-      }, 4000);
-      return () => {
-        clearTimeout(timer);
-      };
-    }
-  }, [errors]);
-
   //useEffect para verificar si el token es válido
   useEffect(() => {
     async function checkLogin() {

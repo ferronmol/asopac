@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getAssociationInfoRequest } from "../api/association";
 import { useEffect, useState } from "react";
 import formatDate from "../assets/formatDate";
+import AssociationHeader from "../components/AssociationHeader";
 
 function AssociationPage() {
   const { associationName } = useParams(); // Obtener el nombre de la asociación de los parámetros de la ruta
@@ -33,33 +34,36 @@ function AssociationPage() {
     console.log("Está en perfil publico", asociacionInfo);
     return (
       <div>
-        <h1 className="text-center mt-5">
-          Bienvenido a la página de acceso público de {associationName}
-        </h1>
-        <div className="bg-gray-500 p-5 rounded-md">
-          <h3>Información Pública de la Asociación:</h3>
-          {asociacionInfo && (
-            <>
-              <p className="text-sm text-orange-600">
-                Nombre: {asociacionInfo.associationName}
-              </p>{" "}
-              <p className="text-sm text-orange-600">
-                Mail: {asociacionInfo.email}
-              </p>
-              <p className="text-sm text-orange-600">
-                Teléfono: {asociacionInfo.phone}
-              </p>
-              {asociacionInfo.address && (
+        <AssociationHeader />
+        <div>
+          <h1 className="text-center mt-5">
+            Bienvenido a la página de acceso público de {associationName}
+          </h1>
+          <div className="bg-gray-500 p-5 rounded-md">
+            <h3>Información Pública de la Asociación:</h3>
+            {asociacionInfo && (
+              <>
                 <p className="text-sm text-orange-600">
-                  Dirección: {asociacionInfo.address.street},{" "}
-                  {asociacionInfo.address.number}. {asociacionInfo.address.city}{" "}
-                  {" ("}
-                  {asociacionInfo.address.state}
-                  {")"} {asociacionInfo.address.postalCode}
+                  Nombre: {asociacionInfo.associationName}
+                </p>{" "}
+                <p className="text-sm text-orange-600">
+                  Mail: {asociacionInfo.email}
                 </p>
-              )}
-            </>
-          )}
+                <p className="text-sm text-orange-600">
+                  Teléfono: {asociacionInfo.phone}
+                </p>
+                {asociacionInfo.address && (
+                  <p className="text-sm text-orange-600">
+                    Dirección: {asociacionInfo.address.street},{" "}
+                    {asociacionInfo.address.number}.{" "}
+                    {asociacionInfo.address.city} {" ("}
+                    {asociacionInfo.address.state}
+                    {")"} {asociacionInfo.address.postalCode}
+                  </p>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -70,36 +74,39 @@ function AssociationPage() {
   const formattedDate = formatDate(asociacion.createdAt);
   return (
     <div>
-      <h1 className="text-center mt-5">
-        Bienvenido a su zona{" "}
-        <span className="text-red-700 p-2 bg-orange-400 rounded-sm">
-          PRIVADA
-        </span>{" "}
-        de {associationName}
-      </h1>
+      <AssociationHeader />{" "}
       <div>
-        {asociacionInfo && (
-          <>
-            <h2>Información de la Asociación:</h2>
-            <p>ID: {asociacion.id}</p>
-            <p>Nombre: {asociacionInfo.associationName}</p>
-            <p>Email: {asociacionInfo.email}</p>
-            <p>Telefono: {asociacionInfo.phone}</p>
-            {asociacionInfo.address && (
-              <p className="text-sm text-orange-600">
-                Dirección: {asociacionInfo.address.street},{" "}
-                {asociacionInfo.address.number}. {asociacionInfo.address.city}{" "}
-                {" ("}
-                {asociacionInfo.address.state}
-                {")"} {asociacionInfo.address.postalCode}
+        <h1 className="text-center mt-5">
+          Bienvenido a su zona{" "}
+          <span className="text-red-700 p-2 bg-orange-400 rounded-sm">
+            PRIVADA
+          </span>{" "}
+          de {associationName}
+        </h1>
+        <div>
+          {asociacionInfo && (
+            <>
+              <h2>Información de la Asociación:</h2>
+              <p>ID: {asociacion.id}</p>
+              <p>Nombre: {asociacionInfo.associationName}</p>
+              <p>Email: {asociacionInfo.email}</p>
+              <p>Telefono: {asociacionInfo.phone}</p>
+              {asociacionInfo.address && (
+                <p className="text-sm text-orange-600">
+                  Dirección: {asociacionInfo.address.street},{" "}
+                  {asociacionInfo.address.number}. {asociacionInfo.address.city}{" "}
+                  {" ("}
+                  {asociacionInfo.address.state}
+                  {")"} {asociacionInfo.address.postalCode}
+                </p>
+              )}
+              <p>
+                Asociacion creada:{" "}
+                {asociacion.createdAt ? formattedDate : "Fecha no disponible"}
               </p>
-            )}
-            <p>
-              Asociacion creada:{" "}
-              {asociacion.createdAt ? formattedDate : "Fecha no disponible"}
-            </p>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

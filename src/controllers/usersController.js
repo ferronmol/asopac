@@ -1,6 +1,8 @@
 import User from "../models/userModel.js";
 import bcrpt from "bcryptjs";
 import { formatDate } from "../libs/formatDate.js";
+import jwt from "jsonwebtoken";
+import { createAccessToken } from "../libs/jwt.js";
 
 /**
  * Funcion para obtener todos los usuarios  de una asociación
@@ -35,15 +37,36 @@ export const getAllUsers = async (req, res) => {
 
 export const register = async (req, res) => {
   const { username, email, password, role } = req.body; //son los campos requeridos
-
-  if (!username || !email || !password) {
-    return res.status(400).json({
-      message: "Faltan campos obligatorios para crear el usuario",
-    });
-  }
-  //obtener el ID de la asociación desde el token para asignarlo al usuario
-  const associationId = req.userId;
+  const errors = [];
   try {
+    // primero veo si ya existe un usuario con el mismo correo
+    const userFound = await User.findOne({
+      email,
+    });
+    if (userFound) {
+      errors.push("  El correo electrónico ya está registrado    ");
+    }
+    //tampooco se puede registrar un usuario con el mismo nombre
+    const usernameFound = await User.findOne({
+      username,
+    });
+    if (usernameFound) {
+      errors.push("  El nombre de usuario ya existe    ");
+    }
+    if (errors.length > 0) {
+      return res.status(400).json({ message: errors });
+    }
+
+    if (!username || !email || !password) {
+      return res.status(400).json({
+        message: "Faltan campos obligatorios para crear el usuario",
+      });
+    }
+    // si existe un token de asociacion obtener el ID de la asociación desde el token para asignarlo al usuario
+    let associationId = null;
+    if (req.userId) {
+      const associationId = req.userId;
+    }
     const passwordHash = await bcrpt.hash(password, 10);
     const createdAt = formatDate(new Date());
     const newUser = new User({
@@ -51,11 +74,18 @@ export const register = async (req, res) => {
       email,
       password: passwordHash,
       role,
-      association: associationId,
+      association: associationId || null,
       patient: null,
-      createdAt,
     });
     const userSaved = await newUser.save();
+
+    const token = await createAccessToken({ id: userSaved._id });
+    res.cookie("tokenUser", token, {
+      sameSite: "none",
+      secure: true,
+    });
+    //formateo la fecha de creación
+    const formattedDate = formatDate(userSaved.createdAt);
     res.status(201).json({
       message: "Usuario creado exitosamente",
       data: {
@@ -65,7 +95,7 @@ export const register = async (req, res) => {
         role: userSaved.role,
         association: userSaved.association,
         patient: userSaved.patient,
-        createdAt,
+        createdAt: formattedDate,
       },
     });
   } catch (error) {

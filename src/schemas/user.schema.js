@@ -21,9 +21,15 @@ const createUserSchema = zod.object({
     .min(6, { message: "La contraseña debe tener al menos 6 caracteres" })
     .max(40, { message: "La contraseña debe tener máximo 40 caracteres" }),
 
-  role: zod.enum(["admin", "user"], {
-    message: "El rol solo puede ser 'admin' o 'user'",
-  }),
+  role: zod
+    .string()
+    .optional()
+    .default("user")
+    .refine((role) => {
+      return ["user", "admin"].includes(role);
+    }),
+  association: zod.string().nullable().optional(),
+  patient: zod.string().nullable().optional(),
 });
 
 const updateUserSchema = zod.object({

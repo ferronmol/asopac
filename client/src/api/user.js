@@ -9,20 +9,20 @@ const API = axios.create({
 });
 /**
  * Función para hacer una petición al backend para registrar un usuario
- * @param  {Object} usuario - Datos del usuario a registrar
+ * @param  {Object} user - Datos del usuario a registrar
  * @returns  Respuesta del backend
  */
-export const registerRequest = async (usuario) => {
-  const response = await API.post("/users", usuario);
+export const registerRequest = async (user) => {
+  const response = await API.post("/users/register", user);
   return response;
 };
 /**
  *  Función para hacer una petición al backend para iniciar sesión
- * @param {Object} asociacion - Datos de la asociación para iniciar sesión
+ * @param {Object} user - Datos de la asociación para iniciar sesión
  * @returns
  */
-export const loginRequest = async (asociacion) => {
-  const response = await API.post("/login", asociacion);
+export const loginRequest = async (user) => {
+  const response = await API.post("/users/login", user);
   return response;
 };
 /**
