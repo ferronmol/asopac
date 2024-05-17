@@ -12,7 +12,7 @@ const API = axios.create({
  * @param  {Object} user - Datos del usuario a registrar
  * @returns  Respuesta del backend
  */
-export const registerRequest = async (user) => {
+export const registerUserRequest = async (user) => {
   const response = await API.post("/users/register", user);
   return response;
 };
@@ -40,5 +40,10 @@ export const logoutRequest = async () => {
 
 export const verifyTokenRequest = async () => {
   const response = await API.get("/verify");
+  return response;
+};
+
+export const getUserInfoRequest = async (username) => {
+  const response = await API.get(`/users/${username}`);
   return response;
 };

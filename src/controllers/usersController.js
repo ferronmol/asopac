@@ -241,6 +241,25 @@ export const login = async (req, res) => {
     res.status(500).json({ message: "Error al iniciar sesión", error: error });
   }
 };
+/**
+ * Funcion para obtener un usuario por su nombre de usuario
+ * @param {username}
+ * @returns {user}
+ */
+export const getUserByUsername = async (username) => {
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    return user;
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Error al obtener el usuario", error: error });
+  }
+};
 
 export default {
   getAllUsers,
@@ -248,5 +267,6 @@ export default {
   getUserById,
   updateUser,
   deleteUser,
+  getUserByUsername,
   login,
 };

@@ -13,7 +13,7 @@ const NavLinks = () => {
 
     return (
         <>
-        <NavLink to="users/register/" className={activeStyleCallback}>Registrar Usuario</NavLink>
+        <NavLink to="/users/register" className={activeStyleCallback}>Registrar Usuario</NavLink>
 
         <NavLink to="/users/login" className={activeStyleCallback}>Iniciar Sesión</NavLink>
         <NavLink to="/users/about" className={activeStyleCallback}>Sobre Nosotros</NavLink>

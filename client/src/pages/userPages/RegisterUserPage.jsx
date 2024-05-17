@@ -1,41 +1,51 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { registerRequest } from "../../api/user";
-import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useUser } from "../../context/UserContext";
+//import { useAuth } from "../../context/AuthContext";
 import AssociationHeader from "../../components/AssociationHeader";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function RegisterUserPage() {
-  const { associationName } = useParams();
-  console.log("Nombre de la asociación que pertenece: ", associationName);
-  const navigate = useNavigate();
+  // necesito los datos de la asociación para poder registrar un usuario
+  //const { association } = useAuth();
+  //console.log("Datos de la asociación: ", association);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [registerErrors, setRegisterErrors] = useState("");
+  const { signupUser, errors: regErrors } = useUser();
   const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    //console.log("Datos del formulario: ", data);
+    console.log("Datos del formulario: ", data);
     try {
       data.createdAt = new Date();
-      const res = await registerRequest(data);
+      const res = await signupUser(data); // Llama a la función signupUser para registrar un usuario
+      //console.log("Respuesta del servidor: ", res);
+      console.log("Datos del usuario registrado: ", res.data.data);
+      console.log("Errores de registro: ", regErrors);
 
-      if (res.status === 201) {
-        console.log("Respuesta del registro: ", res);
+      if (res && res.status === 201) {
+        const username = res.data.data.username;
+        console.log(
+          "Usuario registrado: ",
+          username,
+          " con mail ",
+          res.data.data.email
+        );
+
         setSuccessMessage(res.data.message);
+        navigate(`/users/${username}`);
       }
     } catch (error) {
       if (error.response && error.response.data) {
         console.log("Error de respuesta: ", error.response.data);
-        setRegisterErrors(error.response.data.errors);
       }
       if (error.response && error.response.data.message) {
         console.log("Mensaje de error: ", error.response.data.message);
-        setRegisterErrors([error.response.data.message]);
       }
     }
   };
@@ -49,23 +59,25 @@ function RegisterUserPage() {
             Registro de Usuario en Asociaciones de Pacientes
           </h1>
           {successMessage && (
-            <div className="alert alert-success mt-5" role="alert">
+            <div
+              className="alert alert-success mt-5 bg-green-700 text-white, px-4 py-2 rounded-lg"
+              role="alert"
+            >
               {successMessage}
             </div>
           )}
-          {registerErrors && (
+          {regErrors && regErrors.length > 0 && (
             <div
               className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-5"
               role="alert"
             >
               <ul>
-                {registerErrors.map((error, index) => (
+                {regErrors.map((error, index) => (
                   <li key={index}>{error.trim()}</li>
                 ))}
               </ul>
             </div>
           )}
-
           <form
             onSubmit={handleSubmit(onSubmit)} // Llama a la función onSubmit
             className="container mt-5 w-50 mx-auto border p-5 rounded-md "
@@ -98,8 +110,8 @@ function RegisterUserPage() {
                 id="email"
                 {...register("email", {
                   required: true,
-                  minLenght: 3,
-                  maxLenght: 40,
+                  minLength: 3,
+                  maxLength: 40,
                   pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, //Coincide validación del backend
                 })}
               />

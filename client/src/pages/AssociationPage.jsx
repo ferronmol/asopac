@@ -17,7 +17,7 @@ function AssociationPage() {
         const response = await getAssociationInfoRequest(associationName);
         setAsociacionInfo(response.data);
         //console.log("Información de la asociación: ", response.data);
-        console.log(asociacion);
+        //console.log(asociacion);
       } catch (error) {
         console.error(
           "Error al obtener la información de la asociación: ",
@@ -28,39 +28,42 @@ function AssociationPage() {
     fetchAssociationInfo();
   }, [associationName]);
 
-  // No necesita autenticacion para visualziar la información publica de la asociación pero si la privada
+  // Si no esta autenticado muestra la información publica de la asociación
 
   if (!isAuthenticated) {
     console.log("Está en perfil publico", asociacionInfo);
     return (
       <div>
         <AssociationHeader />
-        <div>
+        <div className="container mx-auto mt-20 bg-slate-500 rounded-lg p-2">
           <h1 className="text-center mt-5">
-            Bienvenido a la página de acceso público de {associationName}
+            Bienvenido a {""}
+            <span className="text-red-700 p-2 bg-orange-400 rounded-sm">
+              {associationName}
+            </span>
           </h1>
           <div className="bg-gray-500 p-5 rounded-md">
-            <h3>Información Pública de la Asociación:</h3>
             {asociacionInfo && (
               <>
-                <p className="text-sm text-orange-600">
-                  Nombre: {asociacionInfo.associationName}
-                </p>{" "}
-                <p className="text-sm text-orange-600">
-                  Mail: {asociacionInfo.email}
-                </p>
-                <p className="text-sm text-orange-600">
-                  Teléfono: {asociacionInfo.phone}
-                </p>
-                {asociacionInfo.address && (
-                  <p className="text-sm text-orange-600">
-                    Dirección: {asociacionInfo.address.street},{" "}
-                    {asociacionInfo.address.number}.{" "}
-                    {asociacionInfo.address.city} {" ("}
-                    {asociacionInfo.address.state}
-                    {")"} {asociacionInfo.address.postalCode}
-                  </p>
-                )}
+                <h3 className="ml-5 text-lg bg-orange-600 p-2 rounded-md mt-2">
+                  Información de la Asociación:
+                </h3>
+                <div className="font-semibold text-lg text-gray-200">
+                  <ul className="list-disc ml-10 mt-2">
+                    <li>Nombre: {asociacionInfo.associationName}</li>{" "}
+                    <li>Mail: {asociacionInfo.email}</li>
+                    <li>Teléfono: {asociacionInfo.phone}</li>
+                    {asociacionInfo.address && (
+                      <li>
+                        Dirección: {asociacionInfo.address.street},{" "}
+                        {asociacionInfo.address.number}.{" "}
+                        {asociacionInfo.address.city} {" ("}
+                        {asociacionInfo.address.state}
+                        {")"} {asociacionInfo.address.postalCode}
+                      </li>
+                    )}
+                  </ul>
+                </div>
               </>
             )}
           </div>
@@ -68,6 +71,7 @@ function AssociationPage() {
       </div>
     );
   }
+
   // Si esta autenticado muestra la información privada de la asociación
   console.log("Está en perfil privado", asociacionInfo);
   console.log(asociacion);
@@ -75,7 +79,7 @@ function AssociationPage() {
   return (
     <div>
       <AssociationHeader />{" "}
-      <div>
+      <div className="container mx-auto mt-20 bg-slate-500 rounded-lg p-2">
         <h1 className="text-center mt-5">
           Bienvenido a su zona{" "}
           <span className="text-red-700 p-2 bg-orange-400 rounded-sm">
@@ -86,24 +90,40 @@ function AssociationPage() {
         <div>
           {asociacionInfo && (
             <>
-              <h2>Información de la Asociación:</h2>
-              <p>ID: {asociacion.id}</p>
-              <p>Nombre: {asociacionInfo.associationName}</p>
-              <p>Email: {asociacionInfo.email}</p>
-              <p>Telefono: {asociacionInfo.phone}</p>
-              {asociacionInfo.address && (
-                <p className="text-sm text-orange-600">
-                  Dirección: {asociacionInfo.address.street},{" "}
-                  {asociacionInfo.address.number}. {asociacionInfo.address.city}{" "}
-                  {" ("}
-                  {asociacionInfo.address.state}
-                  {")"} {asociacionInfo.address.postalCode}
-                </p>
-              )}
-              <p>
-                Asociacion creada:{" "}
-                {asociacion.createdAt ? formattedDate : "Fecha no disponible"}
-              </p>
+              <h2 className="ml-5 text-lg bg-orange-600 p-2 rounded-md mt-2">
+                Información de la Asociación:
+              </h2>
+              <div className="font-semibold text-lg text-gray-200">
+                <ul className="list-disc ml-10 mt-2">
+                  <li>ID: {asociacion.id}</li>
+                  <li>Nombre: {asociacionInfo.associationName}</li>
+                  <li>Email: {asociacionInfo.email}</li>
+                  <li>Telefono: {asociacionInfo.phone}</li>
+                  {asociacionInfo.address && (
+                    <li>
+                      Dirección: {asociacionInfo.address.street},{" "}
+                      {asociacionInfo.address.number}.{" "}
+                      {asociacionInfo.address.city} {" ("}
+                      {asociacionInfo.address.state}
+                      {")"} {asociacionInfo.address.postalCode}
+                    </li>
+                  )}
+                  <li>
+                    Asociacion creada:{" "}
+                    {asociacion.createdAt
+                      ? formattedDate
+                      : "Fecha no disponible"}
+                  </li>
+                </ul>
+              </div>
+              <div className="container  mx-auto mt-5 bg-gray-500 p-5 rounded-md  font-semibold text-lg text-gray-200">
+                <h2 className="text-lg bg-orange-600 p-2 rounded-md mt-2">
+                  Información de los miembros:
+                </h2>
+                <ul className="list-disc ml-5 mt-2">
+                  <li>Miembros: {"No disponible"}</li>
+                </ul>
+              </div>
             </>
           )}
         </div>

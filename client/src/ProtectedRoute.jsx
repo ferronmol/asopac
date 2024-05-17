@@ -2,6 +2,10 @@ import { useEffect } from "react";
 import { useAuth } from "./context/AuthContext";
 import { Navigate, Outlet } from "react-router-dom";
 
+/**
+ *  Componente que protege las rutas de la aplicación
+ * @returns
+ */
 function ProtectedRoute() {
   const { loading, isAuthenticated } = useAuth();
 

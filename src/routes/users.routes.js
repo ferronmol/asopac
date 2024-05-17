@@ -15,7 +15,8 @@ const router = Router();
 
 router.get("/users", authRequired, getAllUsers);
 
-router.get("/users/:id", authRequired, getUserById);
+router.get("/users/:id", getUserById);
+router.get("/users/:username", getUserByUsername);
 
 router.post("/users/register", validateSchema(createUserSchema), register);
 router.post(

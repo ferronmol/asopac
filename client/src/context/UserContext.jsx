@@ -1,7 +1,7 @@
-/*import { createContext, useState, useContext } from "react";
-import { registerRequest } from "../api/user";
+import { createContext, useState, useContext, useEffect } from "react";
+import { registerUserRequest, loginRequest } from "../api/user";
 import PropTypes from "prop-types";
-import { useEffect } from "react";
+import Cookies from "js-cookie";
 
 export const UserContext = createContext();
 
@@ -16,19 +16,76 @@ export const useUser = () => {
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const registerUser = async (userData) => {
+  const setAuthToken = (token) => {
+    Cookies.set("user-token", token, {
+      expires: 1,
+      sameSite: "none",
+      secure: true,
+    });
+  };
+
+  /**
+   * Funcion para registrar un usuario
+   * @param {Object} userData Datos del usuario a registrar
+   * @returns  {Promise} Respuesta de la petición de registro
+   */
+
+  const signupUser = async (userData) => {
     try {
-      const response = await registerRequest(userData);
+      const response = await registerUserRequest(userData);
+      console.log("Respuesta de usuario registrado: ", response.data);
       setUser(response.data.data);
+      setIsAuthenticated(true);
       setErrors(null);
+      setAuthToken(response.data.token);
+
       return response;
     } catch (error) {
       console.error("Error al registrar el usuario:", error.response.data);
       setErrors(error.response.data.message);
       return null;
     }
+  };
+
+  /**
+   * Función para iniciar sesión de usuario
+   */
+  const signinUser = async (userData) => {
+    try {
+      const response = await loginRequest(userData);
+      console.log("Respuesta de login de usuario: ", response.data);
+      setUser(response.data.data);
+      setIsAuthenticated(true);
+      console.log("Usuario autenticado: ", isAuthenticated());
+      setErrors(null);
+
+      setAuthToken(response.data.token);
+
+      return response;
+    } catch (error) {
+      console.error(
+        "Error al iniciar sesión del usuario:",
+        error.response.data
+      );
+      setErrors(error.response.data.message);
+      return null;
+    }
+  };
+
+  /**
+   * Función para cerrar sesión de usuario
+   */
+  const signoutUser = () => {
+    setIsAuthenticated(false);
+    setUser(null);
+    Cookies.remove("user-token");
+  };
+  const removeAuthToken = () => {
+    Cookies.remove("user-token");
   };
 
   // useEffect para borra los errores después de 5 segundos
@@ -46,10 +103,11 @@ export const UserProvider = ({ children }) => {
   return (
     <UserContext.Provider
       value={{
+        signupUser,
         user,
-        asociacion: user,
+        isAuthenticated,
         errors,
-        registerUser,
+        loading,
       }}
     >
       {children}
@@ -60,4 +118,3 @@ export const UserProvider = ({ children }) => {
 UserProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
-*/

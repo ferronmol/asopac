@@ -4,8 +4,6 @@ import Header from "../components/Header";
 import { Link } from "react-router-dom";
 
 function HomePage() {
-  const [associations, setAssociations] = useState([]);
-
   useEffect(() => {
     const fetchAssociations = async () => {
       try {
@@ -19,6 +17,7 @@ function HomePage() {
     fetchAssociations();
   }, []);
 
+  const [associations, setAssociations] = useState([]);
   return (
     <div>
       <Header />
@@ -30,17 +29,14 @@ function HomePage() {
           Haz click para acceder a ella{" "}
         </h3>
         {/*responsive grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        <div className="grid grid-flow-row-dense grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-flow-row gap-4">
           {associations.map((association) => (
             <Link
               key={association.id}
               to={`/association/${association.association}`}
               className="bg-gray-100 border border-gray-300 p-4 rounded-md"
             >
-              <div
-                key={association.id}
-                className="bg-gray-100 border border-gray-300 p-4 rounded-md"
-              >
+              <div className="bg-gray-100 border border-gray-300 p-4 rounded-md">
                 <h2 className="text-lg  text-gray-800 font-semibold">
                   {association.association}
                 </h2>
