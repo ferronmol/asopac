@@ -4,6 +4,8 @@ import { useUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import AssociationHeader from "../../components/AssociationHeader";
+import InputForm from "../../components/common/InputForm";
+import ButtonLink from "../../components/common/ButtonLink";
 
 function RegisterUserPage() {
   const { associationName } = useParams();
@@ -12,6 +14,7 @@ function RegisterUserPage() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
   const { signupUser, errors: regErrors } = useUser();
@@ -82,72 +85,59 @@ function RegisterUserPage() {
             onSubmit={handleSubmit(onSubmit)} // Llama a la función onSubmit
             className="container mt-5 w-50 mx-auto border p-5 rounded-md "
           >
-            <div className="mb-5">
-              <label htmlFor="username" className="form-label">
-                Nombre de Usuario
-              </label>
-              <input
-                type="text"
-                className="w-full bg-orange-700 text-white, px-4 py-2 rounded-md mt-1"
-                id="username"
-                {...register("username", {
-                  required: true,
-                  minLength: 3,
-                  maxLength: 50,
-                })}
-              />
-              {errors.username && (
-                <span className="text-red-600">Este campo es requerido</span>
-              )}
-            </div>
-            <div className="mb-5">
-              <label htmlFor="email" className="form-label">
-                Correo Electrónico:
-              </label>
-              <input
-                type="email"
-                className="w-full bg-orange-700 text-white, px-4 py-2 rounded-md mt-1"
-                id="email"
-                {...register("email", {
-                  required: true,
-                  minLength: 3,
-                  maxLength: 40,
-                  pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, //Coincide validación del backend
-                })}
-              />
-              {errors.email && (
-                <span className="text-red-600">Este campo es requerido</span>
-              )}
-            </div>
-            <div className="mb-5">
-              <label htmlFor="password" className="form-label">
-                Contraseña:
-              </label>
-              <input
-                type="password"
-                className="w-full bg-orange-700 text-white, px-4 py-2 rounded-md mt-1"
-                id="password"
-                name="password"
-                autoComplete="off"
-                placeholder="* * * * * *"
-                {...register("password", {
-                  required: true,
-                  minLength: 6,
-                  maxLength: 20,
-                })}
-              />
-              {errors.password && (
-                <span className="text-red-600">
-                  Este campo es requerido con 6 caracteres mínimo
-                </span>
-              )}
-            </div>
-            <button
-              type="submit"
-              className="btn bg-green-700 text-white, px-4 py-2 rounded-lg"
-            >
-              Registrarse
-            </button>
+            <InputForm
+              label="Nombre de Usuario"
+              type="text"
+              register={register}
+              name="username"
+              errors={errors}
+              validation={{
+                required: true,
+                minLength: { value: 3, message: "Mínimo 3 caracteres" },
+                maxLength: { value: 50, message: "Máximo 50 caracteres" },
+              }}
+            />
+            <InputForm
+              label="Correo Electrónico"
+              type="email"
+              name="email"
+              register={register}
+              errors={errors}
+              validation={{
+                required: true,
+                minLength: { value: 3, message: "Mínimo 3 caracteres" },
+                maxLength: { value: 40, message: "Máximo 40 caracteres" },
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Correo inválido",
+                },
+              }}
+            />
+            <InputForm
+              label="Contraseña"
+              type="password"
+              name="password"
+              register={register}
+              errors={errors}
+              validation={{
+                required: true,
+                minLength: { value: 6, message: "Mínimo 6 caracteres" },
+                maxLength: { value: 20, message: "Máximo 20 caracteres" },
+              }}
+            />
+            <InputForm
+              label="Confirmar Contraseña"
+              type="password"
+              name="confirmPassword"
+              register={register}
+              errors={errors}
+              validation={{
+                required: "Este campo es requerido",
+                validate: (value) =>
+                  value === watch("password") || "Las contraseñas no coinciden",
+              }}
+            />
+            <ButtonLink text="Registrase" type="submit" />
           </form>
         </div>
       </div>

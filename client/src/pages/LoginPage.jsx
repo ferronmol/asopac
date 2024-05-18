@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
+import InputForm from "../components/common/InputForm";
+import ButtonLink from "../components/common/ButtonLink";
 
 function LoginPage() {
   const {
@@ -74,54 +76,39 @@ function LoginPage() {
           onSubmit={handleSubmit(onSubmit)} // Llama a la función onSubmit
           className="container mt-5 w-50 mx-auto border p-5 rounded-md"
         >
-          <div className="mb-5">
-            <label htmlFor="email" className="form-label">
-              Correo Electrónico:
-            </label>
-            <input
-              type="email"
-              className="w-full bg-orange-700 text-white, px-4 py-2 rounded-md mt-1"
-              id="email"
-              {...register("email", {
-                required: true,
-                minLenght: 3,
-                maxLenght: 40,
-                pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, //Coincide validación del backend
-              })}
-            />
-            {errors.email && (
-              <span className="text-red-600">Introduzca un mail válido</span>
-            )}
-          </div>
-          <div className="mb-5">
-            <label htmlFor="password" className="form-label">
-              Contraseña:
-            </label>
-            <input
-              type="password"
-              className="w-full bg-orange-700 text-white, px-4 py-2 rounded-md mt-1"
-              id="password"
-              name="password"
-              autoComplete="off"
-              placeholder="* * * * * *"
-              {...register("password", {
-                required: true,
-                minLength: 6,
-                maxLength: 20,
-              })}
-            />
-            {errors.password && (
-              <span className="text-red-600">
-                Este campo es requerido con 6 caracteres mínimo
-              </span>
-            )}
-          </div>
-          <button
-            type="submit"
-            className="btn bg-green-700 text-white, px-4 py-2 rounded-lg"
-          >
-            Entrar
-          </button>
+          <InputForm
+            label="Correo Electrónico:"
+            type="email"
+            name="email"
+            register={register}
+            errors={errors}
+            validation={{
+              required: "Este campo es requerido",
+              minLength: { value: 3, message: "Mínimo 3 caracteres" },
+              maxLength: { value: 40, message: "Máximo 40 caracteres" },
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Correo inválido",
+              },
+            }}
+            placeholder="Correo Electrónico"
+            autoComplete="username"
+          />
+          <InputForm
+            label="Contraseña"
+            name="password"
+            type="password"
+            register={register}
+            errors={errors}
+            autoComplete="new-password"
+            placeholder="* * * * * *"
+            validation={{
+              required: "Este campo es requerido",
+              minLength: { value: 6, message: "Mínimo 6 caracteres" },
+              maxLength: { value: 40, message: "Máximo 40 caracteres" },
+            }}
+          />
+          <ButtonLink text="Entrar" type="submit" />
         </form>
         <p className="text-center mt-5">
           ¿No tienes cuenta?{" "}

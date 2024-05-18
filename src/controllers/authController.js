@@ -117,6 +117,11 @@ export const login = async (req, res) => {
   }
 };
 
+/**
+ *  función para cerrar la sesión de la asociación
+ * @param {*} req
+ * @param {*} res
+ */
 export function logout(req, res) {
   res.cookie("token", "", { maxAge: 1 }); //masAge 1 para que expire inmediatamente
   res.status(200).json({ message: "Sesión cerrada" });

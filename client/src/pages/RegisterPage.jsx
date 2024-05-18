@@ -4,23 +4,24 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import { useParams } from "react-router-dom";
+import InputForm from "../components/common/InputForm";
+import ButtonLink from "../components/common/ButtonLink";
 
 function RegisterPage() {
   const { associationName } = useParams();
-  console.log("Nombre de la asociación: ", associationName);
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
-
   const { signup, isAuthenticated, errors: registerErrors } = useAuth();
-  //console.log("Errores de registro: ", registerErrors);
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState("");
 
+  console.log("Nombre de la asociación: ", associationName);
+
   const onSubmit = async (data) => {
-    //console.log("Datos del formulario: ", data);
     try {
       data.createdAt = new Date();
       const res = await signup(data);
@@ -46,9 +47,9 @@ function RegisterPage() {
 
   return (
     <div>
-      <Header associationName={associationName} />
+      <Header associationName={associationName || "Nombre por defecto"} />
 
-      <div className="bg-zinc-800 max-w-lg p-10 rounded-md mx-auto mt-10 ">
+      <div className="bg-zinc-800 max-w-lg p-10 rounded-md mx-auto mt-10">
         <h1 className="text-center mt-5 font-serif text-2xl font-bold">
           Registro de Asociaciones de Pacientes
         </h1>
@@ -71,75 +72,69 @@ function RegisterPage() {
         )}
 
         <form
-          onSubmit={handleSubmit(onSubmit)} // Llama a la función onSubmit
-          className="container mt-5 w-50 mx-auto border p-5 rounded-md "
+          onSubmit={handleSubmit(onSubmit)}
+          className="container mt-5 w-50 mx-auto border p-5 rounded-md"
         >
-          <div className="mb-5">
-            <label htmlFor="associationName" className="form-label">
-              Nombre de la Asociación:
-            </label>
-            <input
-              type="text"
-              className="w-full bg-orange-700 text-white, px-4 py-2 rounded-md mt-1"
-              id="associationName"
-              {...register("associationName", {
-                required: true,
-                minLength: 3,
-                maxLength: 50,
-              })}
-            />
-            {errors.associationName && (
-              <span className="text-red-600">Este campo es requerido</span>
-            )}
-          </div>
-          <div className="mb-5">
-            <label htmlFor="email" className="form-label">
-              Correo Electrónico:
-            </label>
-            <input
-              type="email"
-              className="w-full bg-orange-700 text-white, px-4 py-2 rounded-md mt-1"
-              id="email"
-              {...register("email", {
-                required: true,
-                minLenght: 3,
-                maxLenght: 40,
-                pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, //Coincide validación del backend
-              })}
-            />
-            {errors.email && (
-              <span className="text-red-600">Este campo es requerido</span>
-            )}
-          </div>
-          <div className="mb-5">
-            <label htmlFor="password" className="form-label">
-              Contraseña:
-            </label>
-            <input
-              type="password"
-              className="w-full bg-orange-700 text-white, px-4 py-2 rounded-md mt-1"
-              id="password"
-              name="password"
-              autoComplete="off"
-              placeholder="* * * * * *"
-              {...register("password", {
-                required: true,
-                minLength: 6,
-                maxLength: 20,
-              })}
-            />
-            {errors.password && (
-              <span className="text-red-600">
-                Este campo es requerido con 6 caracteres mínimo
-              </span>
-            )}
-          </div>
-          <button
-            type="submit"
-            className="btn bg-green-700 text-white, px-4 py-2 rounded-lg"
-          >
-            Registrarse
-          </button>
+          <InputForm
+            label="Nombre de la Asociación"
+            name="associationName"
+            register={register}
+            errors={errors}
+            validation={{
+              required: "Este campo es requerido",
+              minLength: { value: 3, message: "Mínimo 3 caracteres" },
+              maxLength: { value: 40, message: "Máximo 40 caracteres" },
+            }}
+            placeholder="Nombre de la Asociación"
+            autoComplete="organization"
+          />
+          <InputForm
+            label="Correo Electrónico"
+            name="email"
+            type="email"
+            register={register}
+            errors={errors}
+            validation={{
+              required: "Este campo es requerido",
+              minLength: { value: 3, message: "Mínimo 3 caracteres" },
+              maxLength: { value: 40, message: "Máximo 40 caracteres" },
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Correo inválido",
+              },
+            }}
+            placeholder="Correo Electrónico"
+            autoComplete="username"
+          />
+          <InputForm
+            label="Contraseña"
+            name="password"
+            type="password"
+            register={register}
+            errors={errors}
+            autoComplete="new-password"
+            placeholder="* * * * * *"
+            validation={{
+              required: "Este campo es requerido",
+              minLength: { value: 6, message: "Mínimo 6 caracteres" },
+              maxLength: { value: 20, message: "Máximo 20 caracteres" },
+            }}
+          />
+          <InputForm
+            label="Confirmar Contraseña"
+            name="confirmPassword"
+            type="password"
+            register={register}
+            errors={errors}
+            autoComplete="new-password"
+            placeholder="* * * * * *"
+            validation={{
+              required: "Este campo es requerido",
+              validate: (value) =>
+                value === watch("password") || "Las contraseñas no coinciden",
+            }}
+          />
+          <ButtonLink text="Registrarse" type="submit" />
         </form>
       </div>
     </div>

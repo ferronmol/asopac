@@ -271,7 +271,7 @@ export const login = async (req, res) => {
  * @param {*} res
  * @returns
  */
-export const logout = async (req, res) => {
+export const logoutUser = async (req, res) => {
   res.clearCookie("tokenUser");
   res.json({ message: "Sesión cerrada exitosamente" });
 };
@@ -283,5 +283,5 @@ export default {
   deleteUser,
   getUserByUsername,
   login,
-  logout,
+  logoutUser,
 };

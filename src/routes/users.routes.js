@@ -6,11 +6,12 @@ import userController, {
   getUserByUsername,
   updateUser,
   deleteUser,
-  logout,
+  logoutUser,
 } from "../controllers/usersController.js";
 import { authRequired } from "../middlewares/validateToken.js";
 import { createUserSchema, updateUserSchema } from "../schemas/user.schema.js"; // Importar los esquemas de validación
 import { validateSchema } from "../middlewares/validatorSchemas.js"; // Importar el middleware de validación
+import { logout } from "../controllers/authController.js";
 
 const router = Router();
 
@@ -24,7 +25,7 @@ router.post(
   validateSchema(createUserSchema),
   login
 );
-router.post("/users/logout", logout);
+router.post("/users/logout", logoutUser);
 router.delete("/users/:id", authRequired, deleteUser);
 
 router.put(
