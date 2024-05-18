@@ -4,9 +4,9 @@ import userController, {
   register,
   getUserById,
   getUserByUsername,
-  getAllUsers,
   updateUser,
   deleteUser,
+  logout,
 } from "../controllers/usersController.js";
 import { authRequired } from "../middlewares/validateToken.js";
 import { createUserSchema, updateUserSchema } from "../schemas/user.schema.js"; // Importar los esquemas de validación
@@ -14,9 +14,7 @@ import { validateSchema } from "../middlewares/validatorSchemas.js"; // Importar
 
 const router = Router();
 
-router.get("/users", authRequired, getAllUsers);
-
-router.get("/users/:id", getUserById);
+router.get("/users/info/:id", getUserById);
 router.get("/users/:username", getUserByUsername);
 
 router.post("/users/register", validateSchema(createUserSchema), register);
@@ -26,7 +24,7 @@ router.post(
   validateSchema(createUserSchema),
   login
 );
-
+router.post("/users/logout", logout);
 router.delete("/users/:id", authRequired, deleteUser);
 
 router.put(

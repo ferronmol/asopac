@@ -29,8 +29,8 @@ export const loginRequest = async (user) => {
  * Función para hacer una petición al backend para cerrar sesión
  * @returns
  */
-export const logoutRequest = async () => {
-  const response = await API.post("/logout");
+export const logoutUserRequest = async () => {
+  const response = await API.post("/user/logout");
   return response;
 };
 /**
@@ -43,7 +43,21 @@ export const verifyTokenRequest = async () => {
   return response;
 };
 
+/**
+ * Funcion que hace una petición al backend para obtener la información de un usuario pasando su nombre de usuario
+ * @param {} username
+ * @returns
+ */
 export const getUserInfoRequest = async (username) => {
   const response = await API.get(`/users/${username}`);
+  return response;
+};
+
+/**
+ * Función para hacer una petición al backend para cerrar sesión
+ * @returns
+ */
+export const logoutRequest = async () => {
+  const response = await API.post("/logout");
   return response;
 };

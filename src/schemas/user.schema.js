@@ -28,7 +28,7 @@ const createUserSchema = zod.object({
     .refine((role) => {
       return ["user", "admin"].includes(role);
     }),
-  association: zod.string().nullable().optional(),
+  association: zod.array(zod.string()).nullable().optional(),
   patient: zod.string().nullable().optional(),
 });
 

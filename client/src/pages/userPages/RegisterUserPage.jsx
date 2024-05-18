@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -22,7 +22,8 @@ function RegisterUserPage() {
     console.log("Datos del formulario: ", data);
     try {
       data.createdAt = new Date();
-      const res = await signupUser(data); // Llama a la función signupUser para registrar un usuario
+
+      const res = await signupUser(data, associationName);
       //console.log("Respuesta del servidor: ", res);
       console.log("Datos del usuario registrado: ", res.data.data);
       console.log("Errores de registro: ", regErrors);

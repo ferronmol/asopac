@@ -3,40 +3,18 @@ import bcrpt from "bcryptjs";
 import { formatDate } from "../libs/formatDate.js";
 import jwt from "jsonwebtoken";
 import { createAccessToken } from "../libs/jwt.js";
+import { logout } from "./authController.js";
 
 /**
- * Funcion para obtener todos los usuarios  de una asociación
- * @param {*} req
- * @param {*} res
- * @returns
- */
-export const getAllUsers = async (req, res) => {
-  try {
-    const users = await User.find(
-      //Solo los usuarios de la asociación que hace la petición
-      { association: req.userId }
-    ).populate("association");
-    if (!users) {
-      return res.status(404).json({ message: "No se encontraron usuarios" });
-    }
-    res.json(users);
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ message: "Error al obtener los usuarios", error: error });
-  }
-};
-
-/**
- * Función para crear un usuario
+ * Función para registra un usuario
  * @param {*} req
  * @param {*} res
  * @returns
  */
 
 export const register = async (req, res) => {
-  const { username, email, password, role } = req.body; //son los campos requeridos
+  const { username, email, password, role, association } = req.body;
+  console.log(req.body);
   const errors = [];
   try {
     // primero veo si ya existe un usuario con el mismo correo
@@ -65,7 +43,7 @@ export const register = async (req, res) => {
     // si existe un token de asociacion obtener el ID de la asociación desde el token para asignarlo al usuario
     let associationId = null;
     if (req.userId) {
-      const associationId = req.userId;
+      associationId = req.userId;
     }
     const passwordHash = await bcrpt.hash(password, 10);
     const createdAt = formatDate(new Date());
@@ -74,7 +52,7 @@ export const register = async (req, res) => {
       email,
       password: passwordHash,
       role,
-      association: associationId || null,
+      association: association || [],
       patient: null,
     });
     const userSaved = await newUser.save();
@@ -137,6 +115,51 @@ export const getUserById = async (req, res) => {
  * @param {*} res
  * @returns
  */
+
+/**
+ * Funcion para oberner un usuario por su nombre de usuario
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
+
+export const getUserByUsername = async (req, res) => {
+  const { username } = req.params;
+  try {
+    const userFound = await User.findOne({ username });
+    if (!userFound) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    const {
+      _id,
+      username: usernameFound,
+      email,
+      role,
+      association,
+      patient,
+      createdAt,
+    } = userFound;
+
+    return res.status(200).json({
+      message: "Usuario encontrado",
+      data: {
+        id: _id,
+        username: usernameFound,
+        email,
+        role,
+        association,
+        patient,
+        createdAt,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Error al obtener el usuario", error: error });
+  }
+};
+
 export const updateUser = async (req, res) => {
   const { id } = req.params;
   const { username, email, password } = req.body; //solo se pueden actualizar estos campos
@@ -241,54 +264,24 @@ export const login = async (req, res) => {
     res.status(500).json({ message: "Error al iniciar sesión", error: error });
   }
 };
+
 /**
- * Funcion para obtener un usuario por su nombre de usuario
- * @param {username}
+ * Función para cerrar la sesión de un usuario
+ * @param {*} req
+ * @param {*} res
  * @returns
  */
-export const getUserByUsername = async (req, res) => {
-  const { username } = req.params;
-  try {
-    const userFound = await User.findOne({ username });
-    if (!userFound) {
-      return res.status(404).json({ message: "Usuario no encontrado" });
-    }
-    const {
-      _id,
-      username: usernameFound,
-      email,
-      role,
-      association,
-      patient,
-      createdAt,
-    } = userFound;
-
-    return res.status(200).json({
-      message: "Usuario encontrado",
-      data: {
-        id: _id,
-        username: usernameFound,
-        email,
-        role,
-        association,
-        patient,
-        createdAt,
-      },
-    });
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ message: "Error al obtener el usuario", error: error });
-  }
+export const logout = async (req, res) => {
+  res.clearCookie("tokenUser");
+  res.json({ message: "Sesión cerrada exitosamente" });
 };
 
 export default {
-  getAllUsers,
   register,
   getUserById,
   updateUser,
   deleteUser,
   getUserByUsername,
   login,
+  logout,
 };

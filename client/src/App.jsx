@@ -38,6 +38,7 @@ function App() {
             />
             <Route path="/users/login" element={<LoginUserPage />} />
             <Route path="/users/:username" element={<UserPage />} />
+            <Route path="/users/logout" element={<LogoutPage />} />
 
             {/* Rutas protegidas de la asociación y gestion de usuarios */}
             <Route element={<ProtectedRoute />}>

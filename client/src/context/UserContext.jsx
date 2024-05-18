@@ -18,7 +18,6 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   const setAuthToken = (token) => {
     Cookies.set("user-token", token, {
@@ -104,10 +103,13 @@ export const UserProvider = ({ children }) => {
     <UserContext.Provider
       value={{
         signupUser,
+        signinUser,
+        signoutUser,
         user,
         isAuthenticated,
         errors,
-        loading,
+        setAuthToken,
+        removeAuthToken,
       }}
     >
       {children}
