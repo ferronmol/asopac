@@ -3,6 +3,7 @@ import userController, {
   login,
   register,
   getUserById,
+  getUserByUsername,
   getAllUsers,
   updateUser,
   deleteUser,

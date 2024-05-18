@@ -3,8 +3,11 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+import { useParams } from "react-router-dom";
 
 function RegisterPage() {
+  const { associationName } = useParams();
+  console.log("Nombre de la asociación: ", associationName);
   const {
     register,
     handleSubmit,
@@ -43,7 +46,7 @@ function RegisterPage() {
 
   return (
     <div>
-      <Header />
+      <Header associationName={associationName} />
 
       <div className="bg-zinc-800 max-w-lg p-10 rounded-md mx-auto mt-10 ">
         <h1 className="text-center mt-5 font-serif text-2xl font-bold">

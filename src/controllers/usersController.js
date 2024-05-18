@@ -244,15 +244,37 @@ export const login = async (req, res) => {
 /**
  * Funcion para obtener un usuario por su nombre de usuario
  * @param {username}
- * @returns {user}
+ * @returns
  */
-export const getUserByUsername = async (username) => {
+export const getUserByUsername = async (req, res) => {
+  const { username } = req.params;
   try {
-    const user = await User.findOne({ username });
-    if (!user) {
+    const userFound = await User.findOne({ username });
+    if (!userFound) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
-    return user;
+    const {
+      _id,
+      username: usernameFound,
+      email,
+      role,
+      association,
+      patient,
+      createdAt,
+    } = userFound;
+
+    return res.status(200).json({
+      message: "Usuario encontrado",
+      data: {
+        id: _id,
+        username: usernameFound,
+        email,
+        role,
+        association,
+        patient,
+        createdAt,
+      },
+    });
   } catch (error) {
     console.error(error);
     return res

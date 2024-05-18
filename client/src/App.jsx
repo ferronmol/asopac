@@ -32,7 +32,10 @@ function App() {
               element={<AssociationPage />}
             />
             {/* Rutas públicas de usuarios */}
-            <Route path="/users/register" element={<RegisterUserPage />} />
+            <Route
+              path="/users/register/:associationName"
+              element={<RegisterUserPage />}
+            />
             <Route path="/users/login" element={<LoginUserPage />} />
             <Route path="/users/:username" element={<UserPage />} />
 

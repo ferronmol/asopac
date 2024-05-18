@@ -34,7 +34,7 @@ function AssociationPage() {
     console.log("Está en perfil publico", asociacionInfo);
     return (
       <div>
-        <AssociationHeader />
+        <AssociationHeader associationName={associationName} />
         <div className="container mx-auto mt-20 bg-slate-500 rounded-lg p-2">
           <h1 className="text-center mt-5">
             Bienvenido a {""}

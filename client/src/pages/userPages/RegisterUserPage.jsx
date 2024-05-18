@@ -1,14 +1,13 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useUser } from "../../context/UserContext";
-//import { useAuth } from "../../context/AuthContext";
-import AssociationHeader from "../../components/AssociationHeader";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import AssociationHeader from "../../components/AssociationHeader";
 
 function RegisterUserPage() {
-  // necesito los datos de la asociación para poder registrar un usuario
-  //const { association } = useAuth();
-  //console.log("Datos de la asociación: ", association);
+  const { associationName } = useParams();
+  console.log("Nombre de la asociación: ", associationName);
 
   const {
     register,

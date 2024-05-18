@@ -1,10 +1,17 @@
 import jwt from "jsonwebtoken";
 
+/**
+ * Esta función verifica si existe un token en las cookies de la petición y si es válido.
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
+ */
 export const authRequired = async (req, res, next) => {
   try {
     // Verificar si existe el token
     const token = req.cookies.token;
-    //console.log(token);
+    console.log(token);
     if (!token) {
       return res
         .status(401)

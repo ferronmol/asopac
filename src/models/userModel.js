@@ -38,12 +38,14 @@ const UserSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Patient",
     },
-    //relacion con la asociacion
-    association: {
-      type: Schema.Types.ObjectId,
-      ref: "Association",
-      required: false,
-    },
+    //relacion con muchas asociaciones
+    association: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Association",
+        required: false,
+      },
+    ],
     role: {
       type: String,
       default: "user",

@@ -4,20 +4,30 @@ import Header from "../components/Header";
 import { Link } from "react-router-dom";
 
 function HomePage() {
+  const [associations, setAssociations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     const fetchAssociations = async () => {
       try {
         const response = await getAllAssociationsRequest();
         setAssociations(response.data);
+        setLoading(false);
         console.log("Asociaciones: ", response.data);
       } catch (error) {
+        setError("Error al obtener las asociaciones");
+        setLoading(false);
         console.error("Error al obtener las asociaciones: ", error);
       }
     };
     fetchAssociations();
   }, []);
 
-  const [associations, setAssociations] = useState([]);
+  if (loading) {
+    return <div className="text-center">Cargando...</div>;
+  }
+
   return (
     <div>
       <Header />
@@ -28,6 +38,11 @@ function HomePage() {
         <h3 className="text-center text-lg text-orange-600 mb-5">
           Haz click para acceder a ella{" "}
         </h3>
+        {error && (
+          <div className="bg-red-100 border text-center border-red-400 text-red-700 px-4 py-3 rounded relative">
+            {error} Por favor, inténtalo mas tarde.
+          </div>
+        )}
         {/*responsive grid */}
         <div className="grid grid-flow-row-dense grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-flow-row gap-4">
           {associations.map((association) => (
