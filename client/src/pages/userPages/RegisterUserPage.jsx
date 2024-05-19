@@ -37,7 +37,9 @@ function RegisterUserPage() {
           "Usuario registrado: ",
           username,
           " con mail ",
-          res.data.data.email
+          res.data.data.email,
+          " en la asociación ",
+          associationName
         );
 
         setSuccessMessage(res.data.message);
@@ -90,6 +92,7 @@ function RegisterUserPage() {
               type="text"
               register={register}
               name="username"
+              autoComplete="username"
               errors={errors}
               validation={{
                 required: true,
@@ -101,6 +104,8 @@ function RegisterUserPage() {
               label="Correo Electrónico"
               type="email"
               name="email"
+              id="email"
+              autoComplete="email"
               register={register}
               errors={errors}
               validation={{
@@ -117,6 +122,7 @@ function RegisterUserPage() {
               label="Contraseña"
               type="password"
               name="password"
+              autoComplete="new-password"
               register={register}
               errors={errors}
               validation={{
@@ -129,6 +135,7 @@ function RegisterUserPage() {
               label="Confirmar Contraseña"
               type="password"
               name="confirmPassword"
+              autoComplete="new-password"
               register={register}
               errors={errors}
               validation={{

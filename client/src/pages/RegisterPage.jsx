@@ -110,6 +110,7 @@ function RegisterPage() {
             label="Contraseña"
             name="password"
             type="password"
+            id="password"
             register={register}
             errors={errors}
             autoComplete="new-password"
@@ -125,6 +126,7 @@ function RegisterPage() {
             name="confirmPassword"
             type="password"
             register={register}
+            id="confirmPassword"
             errors={errors}
             autoComplete="new-password"
             placeholder="* * * * * *"

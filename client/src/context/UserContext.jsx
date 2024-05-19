@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { registerUserRequest, loginRequest } from "../api/user";
+import { getAssociationByNameRequest } from "../api/association";
 import PropTypes from "prop-types";
 import Cookies from "js-cookie";
 
@@ -26,15 +27,37 @@ export const UserProvider = ({ children }) => {
       secure: true,
     });
   };
+  //Obtengo el id de la asociacion de la que se quiere registrar el usuario por su nombre
+  const getAssociationByName = async (associationName) => {
+    try {
+      const response = await getAssociationByNameRequest(associationName);
+      console.log("Id de la asociacion: ", response.data.data.associateId);
+      return response.data.data.associateId;
+    } catch (error) {
+      console.error("Error al obtener la asociacion por nombre:", error);
+      return null;
+    }
+  };
 
   /**
-   * Funcion para registrar un usuario
+   * Funcion para registrar un usuario, LE AÑADIMOS el id de la asociacion a la que pertenece en su array de asociaciones
    * @param {Object} userData Datos del usuario a registrar
+   * @param {String} associationName Nombre de la asociación a la que pertenece el usuario
    * @returns  {Promise} Respuesta de la petición de registro
    */
 
-  const signupUser = async (userData) => {
+  const signupUser = async (userData, associationName) => {
     try {
+      console.log("asocacion a la que pertenece: ", associationName);
+      const associationId = await getAssociationByName(associationName);
+      console.log("Id de la asociacion obtenido: ", associationId);
+      if (associationId) {
+        //Creamos o añadimos el id de la asociacion al array de asociaciones del usuario
+        if (!userData.association) {
+          userData.association = [];
+        }
+        userData.association.push(associationId);
+      }
       const response = await registerUserRequest(userData);
       console.log("Respuesta de usuario registrado: ", response.data);
       setUser(response.data.data);

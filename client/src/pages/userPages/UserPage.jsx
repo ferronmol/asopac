@@ -80,10 +80,10 @@ function UserPage() {
         <div className="font-semibold text-lg text-gray-200">
           <ul className="list-disc ml-10 mt-2">
             <li>
-              <ButtonLink text="Editar perfil " to="/users/edit" />
+              <ButtonLink text="Editar perfil " to="/users/edit" type="link" />
             </li>
             <li>
-              <ButtonLink text="Cerrar sesión" to="/users/logout" />
+              <ButtonLink text="Cerrar sesión" to="/" type="link" />
             </li>
           </ul>
         </div>

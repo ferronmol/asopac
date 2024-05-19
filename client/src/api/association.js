@@ -25,3 +25,23 @@ export const getAllAssociationsRequest = async () => {
   const response = await API.get("/association");
   return response.data;
 };
+
+/**
+ * Funcion para obtener TODA la informacion de una asociacion por su id
+ * @param {String} associationId - Id de la asociación
+ * @returns
+ */
+export const getAssociationByIdRequest = async (associationId) => {
+  const response = await API.get(`/association/id/${associationId}`);
+  return response.data;
+};
+
+/**
+ * Función para obtener la información de una asociación por su associationName
+ * @param {String} associationName - Nombre de la asociación
+ * @returns  La información de la asociación con message y data
+ */
+export const getAssociationByNameRequest = async (associationName) => {
+  const response = await API.get(`/association/${associationName}`);
+  return response.data;
+};

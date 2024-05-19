@@ -139,7 +139,7 @@ export const profile = async (req, res) => {
         id: associationFound._id,
         associationName: associationFound.associationName,
         email: associationFound.email,
-        createdAt: associationFound.timeStamp,
+        createdAt: associationFound.createdAt,
       },
     });
   } catch (error) {
@@ -175,7 +175,7 @@ export const verifyToken = async (req, res) => {
           id: associationFound._id,
           associationName: associationFound.associationName,
           email: associationFound.email,
-          createdAt: associationFound.timeStamp,
+          createdAt: associationFound.createdAt,
         },
       });
     });
@@ -188,10 +188,43 @@ export const verifyToken = async (req, res) => {
   }
 };
 
+/**
+ * Función para obtener la información de una asociación por su Id
+ */
+
+export const getAssociationById = async (req, res) => {
+  try {
+    const associationFound = await RegisterAssociation.findById(
+      req.params.associationId
+    );
+    if (!associationFound) {
+      return res.status(404).json({ message: "Asociación no encontrada" });
+    }
+    return res.status(200).json({
+      message: "Perfil de la asociación",
+      data: {
+        id: associationFound._id,
+        associationName: associationFound.associationName,
+        email: associationFound.email,
+        Telefono: associationFound.phone,
+        Direccion: associationFound.address,
+        createdAt: associationFound.createdAt,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Error al obtener el perfil de la asociación",
+      error: error.message,
+    });
+  }
+};
+
 export default {
   register,
   login,
   logout,
   profile,
   verifyToken,
+  getAssociationById,
 };

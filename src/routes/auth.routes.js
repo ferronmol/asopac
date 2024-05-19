@@ -5,6 +5,7 @@ import authController, {
   logout,
   profile,
   verifyToken,
+  getAssociationById,
 } from "../controllers/authController.js";
 import {
   getAssociationByName,
@@ -23,7 +24,7 @@ router.post("/logout", logout);
 router.get("/verify", verifyToken);
 router.get("/association/:associationName", getAssociationByName);
 router.get("/association", getAllAssociations);
-
+router.get("/association/id/:associationId", getAssociationById);
 router.get(/profile/, authRequired, profile); // Ruta protegida
 
 export default router;

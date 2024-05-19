@@ -55,7 +55,7 @@ const LoginUserPage = () => {
     <div>
       <div className="bg-zinc-800 max-w-lg p-10 rounded-md mx-auto mt-10">
         <h1 className="text-center mt-5 font-serif text-2xl font-bold">
-          Login de Asociaciones de Pacientes
+          Login de Usuario en Asociaciones de Pacientes
         </h1>
 
         {loginErrors && (
