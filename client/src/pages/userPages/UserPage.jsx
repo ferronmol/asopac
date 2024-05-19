@@ -8,17 +8,14 @@ function UserPage() {
   const { username } = useParams();
   const [user, setUser] = useState(null);
   const { user: userContext, isAuthenticated } = useUser();
-  console.log("Usuario del contexto: ", userContext);
+
   useEffect(() => {
     // Función para obtener la información del usuario
     const fetchUserInfo = async () => {
       try {
         const username = userContext.username;
         const response = await getUserInfoRequest(username);
-        console.log(response.data);
         setUser(response.data);
-        console.log("Información del usuario: ", response.data);
-        console.log(user);
       } catch (error) {
         console.error("Error al obtener la información del usuario: ", error);
       }
@@ -35,7 +32,6 @@ function UserPage() {
       </div>
     );
   }
-  console.log("Esta en perfil privado", user);
 
   return (
     <div className="container mx-auto mt-20 bg-slate-500 rounded-lg p-2">
@@ -64,10 +60,7 @@ function UserPage() {
                   Rol:{" "}
                   {userContext.role === "admin" ? "Administrador" : "Usuario"}
                 </li>
-                <li>
-                  Asociaciones inscritas:
-                  <ul>{userContext.associations}</ul>
-                </li>
+                <li>Asociaciones inscritas: {userContext.association}</li>
               </ul>
             </div>
           </>

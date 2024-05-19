@@ -42,6 +42,16 @@ export const getAssociationByIdRequest = async (associationId) => {
  * @returns  La información de la asociación con message y data
  */
 export const getAssociationByNameRequest = async (associationName) => {
-  const response = await API.get(`/association/${associationName}`);
-  return response.data;
+  try {
+    const encodedAssociationName = encodeURIComponent(associationName);
+    const response = await API.get(`/association/${encodedAssociationName}`);
+    console.log("Respuesta de la API de asociación: ", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error en getAssociationByNameRequest:",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  }
 };

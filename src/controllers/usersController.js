@@ -47,6 +47,7 @@ export const register = async (req, res) => {
     }
     const passwordHash = await bcrpt.hash(password, 10);
     const createdAt = formatDate(new Date());
+    //creo el nuevo usuario
     const newUser = new User({
       username,
       email,

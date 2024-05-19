@@ -31,8 +31,8 @@ export const UserProvider = ({ children }) => {
   const getAssociationByName = async (associationName) => {
     try {
       const response = await getAssociationByNameRequest(associationName);
-      console.log("Id de la asociacion: ", response.data.data.associateId);
-      return response.data.data.associateId;
+      console.log("Respuesta de la asociacion por nombre: ", response);
+      return response.data.associateId;
     } catch (error) {
       console.error("Error al obtener la asociacion por nombre:", error);
       return null;
@@ -48,18 +48,16 @@ export const UserProvider = ({ children }) => {
 
   const signupUser = async (userData, associationName) => {
     try {
-      console.log("asocacion a la que pertenece: ", associationName);
       const associationId = await getAssociationByName(associationName);
       console.log("Id de la asociacion obtenido: ", associationId);
       if (associationId) {
-        //Creamos o añadimos el id de la asociacion al array de asociaciones del usuario
-        if (!userData.association) {
-          userData.association = [];
+        if (associationId) {
+          userData.association = userData.association || [];
+          userData.association.push(associationId);
         }
-        userData.association.push(associationId);
       }
       const response = await registerUserRequest(userData);
-      console.log("Respuesta de usuario registrado: ", response.data);
+      // console.log("Respuesta de usuario registrado: ", response.data);
       setUser(response.data.data);
       setIsAuthenticated(true);
       setErrors(null);

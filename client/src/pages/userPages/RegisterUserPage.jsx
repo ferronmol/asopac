@@ -23,6 +23,7 @@ function RegisterUserPage() {
 
   const onSubmit = async (data) => {
     console.log("Datos del formulario: ", data);
+    console.log("Nombre de la asociación: ", associationName);
     try {
       data.createdAt = new Date();
 
