@@ -9,7 +9,7 @@ const Logo = () => {
         <img
           src={manos}
           alt="Logo"
-          className="logo w-12 h-12 sm:w-18 sm:h- rounded-full "
+          className="logo w-12 h-12 sm:w-18 sm:h- rounded-full transform transition-transform duration-300 hover:scale-110"
           style={{ borderRadius: "50%" }}
         />
       </Link>

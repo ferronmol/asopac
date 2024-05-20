@@ -31,7 +31,7 @@ function HomePage() {
   return (
     <div>
       <Header />
-      <div className="container mx-auto mt-20 bg-slate-500 rounded-md p-2">
+      <div className="container mx-auto mt-20 bg-slate-500 rounded-md p-2 border-2 border-orange-500">
         <h1 className="text-center text-2xl font-bold mb-5">
           Asociaciones de Pacientes
         </h1>
@@ -51,7 +51,7 @@ function HomePage() {
               to={`/association/${association.association}`}
               className="bg-gray-100 border border-gray-300 p-4 rounded-md"
             >
-              <div className="bg-gray-100 border border-gray-300 p-4 rounded-md">
+              <div className="bg-gradient-to-r from-gray-400 via-white to-gray-200 border-2 border-gray-300 p-4 rounded-md transform transition-transform duration-300 hover:scale-105">
                 <h2 className="text-lg  text-gray-800 font-semibold">
                   {association.association}
                 </h2>
