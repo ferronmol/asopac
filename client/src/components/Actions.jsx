@@ -2,7 +2,7 @@ import ButtonOnClick from "./common/ButtonOnClick";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const Actions = () => {
+const Actions = ({ onDelete }) => {
   const { signout } = useAuth();
   const navigate = useNavigate();
 
@@ -20,6 +20,9 @@ const Actions = () => {
         }}
       />
       <ButtonOnClick text="Cerrar sesión" onClick={handleSignOut} />
+      (onDelete && (
+      <ButtonOnClick text="Borrar Asociación" onClick={onDelete} />
+      ))
     </div>
   );
 };

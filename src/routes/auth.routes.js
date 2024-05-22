@@ -6,6 +6,7 @@ import authController, {
   profile,
   verifyToken,
   getAssociationById,
+  deleteAssociation,
 } from "../controllers/authController.js";
 import {
   getAssociationByName,
@@ -20,6 +21,7 @@ const router = Router();
 router.post("/register", validateSchema(registerSchema), register);
 router.post("/login", validateSchema(loginSchema), login);
 router.post("/logout", logout);
+router.delete("/association/:associationId", deleteAssociation);
 
 router.get("/verify", verifyToken);
 router.get("/association/:associationName", getAssociationByName);

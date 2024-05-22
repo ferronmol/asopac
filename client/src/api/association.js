@@ -55,3 +55,19 @@ export const getAssociationByNameRequest = async (associationName) => {
     throw error;
   }
 };
+
+/**
+ * Funcion para borrar una asociacion
+ * @param {String} associationId - Id de la asociación
+ * @returns
+ */
+
+export const deleteAssociationRequest = async (associationId) => {
+  try {
+    const response = await API.delete(`/association/${associationId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al borrar la asociación: ", error);
+    throw error;
+  }
+};

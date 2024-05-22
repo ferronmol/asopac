@@ -1,6 +1,9 @@
 import { useAuth } from "../context/AuthContext";
 import { useParams } from "react-router-dom";
-import { getAssociationInfoRequest } from "../api/association";
+import {
+  getAssociationInfoRequest,
+  deleteAssociationRequest,
+} from "../api/association";
 import { useEffect, useState } from "react";
 import AssociationHeader from "../components/AssociationHeader";
 import Actions from "../components/Actions";
@@ -29,6 +32,25 @@ function AssociationPage() {
     fetchAssociationInfo();
   }, [associationName]);
 
+  /**
+   * Función para borrar una asociación
+   * @param {String} associationId - Id de la asociación
+   * @returns
+   */
+
+  const handleDelete = async () => {
+    try {
+      const response = await deleteAssociationRequest(asociacion.id);
+      console.log("Respuesta de la API al borrar la asociación: ", response);
+      if (response.status === 200) {
+        console.log("Asociación borrada correctamente");
+        window.location.href = "/";
+      }
+    } catch (error) {
+      console.error("Error al borrar la asociación: ", error);
+    }
+  };
+
   const additionalInfo = isAuthenticated
     ? {
         id: asociacion.id,
@@ -39,7 +61,7 @@ function AssociationPage() {
   return (
     <div>
       <AssociationHeader />
-      {isAuthenticated && <Actions />}
+      {isAuthenticated && <Actions onDelete={handleDelete} />}
       <div className="container mx-auto mt-10 bg-slate-500 rounded-lg p-2">
         <h1 className="text-center mt-5">
           Bienvenido: <span className="text-xl">{associationName} </span>

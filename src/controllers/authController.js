@@ -220,6 +220,36 @@ export const getAssociationById = async (req, res) => {
   }
 };
 
+/**
+ * funcion para borrar una asociación
+ *
+ */
+
+export const deleteAssociation = async (req, res) => {
+  try {
+    const associationFound = await RegisterAssociation.findByIdAndDelete(
+      req.params.associationId
+    );
+    if (!associationFound) {
+      return res.status(404).json({ message: "Asociación no encontrada" });
+    }
+    return res.status(200).json({
+      message: "Asociación eliminada",
+      data: {
+        id: associationFound._id,
+        associationName: associationFound.associationName,
+        email: associationFound.email,
+        createdAt: associationFound.createdAt,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Error al eliminar la asociación",
+      error: error.message,
+    });
+  }
+};
 export default {
   register,
   login,
@@ -227,4 +257,5 @@ export default {
   profile,
   verifyToken,
   getAssociationById,
+  deleteAssociation,
 };
