@@ -102,10 +102,11 @@ export const UserProvider = ({ children }) => {
   const signoutUser = () => {
     setIsAuthenticated(false);
     setUser(null);
-    Cookies.remove("user-token");
+    removeAuthToken();
   };
   const removeAuthToken = () => {
     Cookies.remove("user-token");
+    Cookies.remove("tokenUser");
   };
 
   // useEffect para borra los errores después de 5 segundos

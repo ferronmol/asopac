@@ -48,11 +48,10 @@ function RegisterPage() {
   return (
     <div>
       <Header associationName={associationName || "Nombre por defecto"} />
-
+      <h1 className="text-center  mt-2 font-serif text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to bg-white ">
+        Registro de Asociaciones de Pacientes
+      </h1>
       <div className="bg-zinc-800 max-w-lg p-10 rounded-md mx-auto mt-10">
-        <h1 className="text-center mt-5 font-serif text-2xl font-bold">
-          Registro de Asociaciones de Pacientes
-        </h1>
         {successMessage && (
           <div className="alert alert-success mt-5" role="alert">
             {successMessage}
@@ -60,7 +59,7 @@ function RegisterPage() {
         )}
         {registerErrors && (
           <div
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-5"
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative "
             role="alert"
           >
             <ul>

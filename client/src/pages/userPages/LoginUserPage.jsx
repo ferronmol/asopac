@@ -8,26 +8,23 @@ import ButtonLink from "../../components/common/ButtonLink";
 
 const LoginUserPage = () => {
   const { login } = useUser();
-  console.log("Info de login", login);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { isAuthenticated, errors: loginErrors } = useUser();
+  const { isAuthenticated, errors: loginErrors, user } = useUser();
   const navigate = useNavigate();
-  //estado par alamacenar el nombre del usuario
   const [userName, setUserName] = useState(null);
 
   const onSubmit = async (data) => {
-    console.log("data", data);
-    //
+    //console.log("data", data);
     try {
       const res = await login(data);
       if (res.status === 200) {
         setUserName(res.data.data.userName);
         if (isAuthenticated === true) {
-          navigate(`/user/${userName}`);
+          navigate(`/association/${res.data.data.associationName}`);
         } else {
           console.log("Fallo la autenticación");
         }
@@ -40,16 +37,11 @@ const LoginUserPage = () => {
   };
   //useEffect para redirigir al usuario a la página de usuario si ya está autenticado
   useEffect(() => {
-    if (isAuthenticated) {
-      console.log(
-        "Autenticado cambiado:",
-        isAuthenticated,
-        "Redirigiendo a: ",
-        userName
-      );
-      navigate(`/user/${userName}`);
+    if (isAuthenticated && user) {
+      navigate(`/association/${user.associationName}`);
+      console.log("El usuario tiene autenticacion: ", isAuthenticated);
     }
-  }, [isAuthenticated, navigate, userName]);
+  }, [isAuthenticated, navigate, user]);
 
   return (
     <div>

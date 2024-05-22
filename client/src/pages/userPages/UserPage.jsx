@@ -1,13 +1,21 @@
 import { useUser } from "../../context/UserContext";
+import { useAuth } from "../../context/AuthContext";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getUserInfoRequest } from "../../api/user";
 import ButtonLink from "../../components/common/ButtonLink";
+import ButtonOnClick from "../../components/common/ButtonOnClick";
 
 function UserPage() {
   const { username } = useParams();
   const [user, setUser] = useState(null);
-  const { user: userContext, isAuthenticated } = useUser();
+  const {
+    user: userContext,
+    isAuthenticated,
+    signoutUser,
+    association,
+  } = useUser();
+  const { asociacion } = useAuth();
 
   useEffect(() => {
     // Función para obtener la información del usuario
@@ -76,7 +84,7 @@ function UserPage() {
               <ButtonLink text="Editar perfil " to="/users/edit" type="link" />
             </li>
             <li>
-              <ButtonLink text="Cerrar sesión" to="/" type="link" />
+              <ButtonOnClick text="Cerrar sesión" onClick={signoutUser} />
             </li>
           </ul>
         </div>

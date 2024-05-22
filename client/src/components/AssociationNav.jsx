@@ -8,7 +8,7 @@ const activeStyleCallback = ({ isActive }) => {
 };
 
 const NavLinks = ({ associationName }) => {
-  console.log("associationName en NavLinks:", associationName);
+  //console.log("associationName en NavLinks:", associationName);
 
   return (
     <>
@@ -16,7 +16,7 @@ const NavLinks = ({ associationName }) => {
         Registrar Usuario
       </Link>
       <NavLink to="/users/login" className={activeStyleCallback}>
-        Iniciar Sesión
+        Iniciar Usuario
       </NavLink>
       <NavLink to="/association/profile" className={activeStyleCallback}>
         Sobre Nosotros
