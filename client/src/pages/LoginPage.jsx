@@ -53,12 +53,10 @@ function LoginPage() {
   return (
     <div>
       <Header />
-
-      <div className="bg-zinc-800 max-w-lg p-10 rounded-md mx-auto mt-10">
-        <h1 className="text-center mt-5 font-serif text-2xl font-bold">
-          Login de Asociaciones de Pacientes
-        </h1>
-
+      <h1 className=" text-center  mt-2 font-serif text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to bg-white ">
+        Login de Asociaciones de Pacientes
+      </h1>
+      <div className="bg-zinc-800 max-w-lg p-10 rounded-md mx-auto mt-5">
         {loginErrors && (
           <div
             className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-5"

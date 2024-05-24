@@ -48,10 +48,10 @@ function RegisterPage() {
   return (
     <div>
       <Header associationName={associationName || "Nombre por defecto"} />
-      <h1 className="text-center  mt-2 font-serif text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to bg-white ">
+      <h1 className=" text-center  mt-2 font-serif text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to bg-white ">
         Registro de Asociaciones de Pacientes
       </h1>
-      <div className="bg-zinc-800 max-w-lg p-10 rounded-md mx-auto mt-10">
+      <div className="bg-zinc-800 max-w-lg pt-10 p-5 rounded-md mx-auto mt-2">
         {successMessage && (
           <div className="alert alert-success mt-5" role="alert">
             {successMessage}
@@ -72,7 +72,7 @@ function RegisterPage() {
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="container mt-5 w-50 mx-auto border p-5 rounded-md"
+          className="container  w-50 mx-auto border p-5 rounded-md"
         >
           <InputForm
             label="Nombre de la Asociación"

@@ -11,7 +11,7 @@ function InputForm({
   autoComplete,
 }) {
   return (
-    <div className="mb-5">
+    <div>
       <label htmlFor={name} className="form-label">
         {label}:
       </label>

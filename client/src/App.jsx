@@ -10,6 +10,7 @@ import HomePage from "./pages/HomePage";
 import UserPage from "./pages/userPages/UserPage";
 import RegisterUserPage from "./pages/userPages/RegisterUserPage";
 import LoginUserPage from "./pages/userPages/LoginUserPage";
+import AddAssociationInfoPage from "./pages/AddAssociationInfoPage";
 
 import ProtectedRoute from "./ProtectedRoute";
 import AboutPage from "./pages/AboutPage";
@@ -26,6 +27,7 @@ function App() {
             <Route path="/association/login" element={<LoginPage />} />
             <Route path="/association/logout" element={<LogoutPage />} />
             <Route path="/association/about" element={<AboutPage />} />
+
             {/* Rutas públicas y privadas de las asociaciónes */}
             <Route
               path="/association/:associationName"
@@ -48,6 +50,11 @@ function App() {
                 element={<AssociationPage />}
               />
               <Route path="/association/profile" element={<ProfilePage />} />
+              <Route
+                path="/association/:associationName/add-info"
+                element={<AddAssociationInfoPage />}
+              />
+
               {/* <Route path="/users" element={<UserPage />} />
               <Route path="/users/:Id" element={<UserPage />} />*/}
             </Route>

@@ -1,12 +1,18 @@
 import { NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const activeStyleCallback = ({ isActive }) => {
   return isActive ? "text-orange-500" : "text-white";
 };
 
-const NavLinks = () => {
+const NavLinks = ({ associationName, isAuthenticated }) => {
+  console.log(
+    "associationName y isAuthenticated en NavLinks:",
+    associationName,
+    isAuthenticated
+  );
   return (
     <>
       <NavLink to="/" className={activeStyleCallback}>
@@ -28,6 +34,7 @@ const NavLinks = () => {
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -38,7 +45,7 @@ const Nav = () => {
       <nav className=" flex w-full md:w-1/3 justify-end">
         <div className="justify-between hidden md:flex w-full items-center h-full">
           <div className="flex space-x-4 items-center">
-            <NavLinks />
+            <NavLinks isAuthenticated={isAuthenticated} />
           </div>
         </div>
         <div className="md:hidden flex items-center">

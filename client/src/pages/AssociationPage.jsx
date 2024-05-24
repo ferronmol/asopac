@@ -11,6 +11,7 @@ import AssociationInfo from "../components/AssociationInfo";
 
 function AssociationPage() {
   const { associationName } = useParams();
+  console.log("Nombre de la asociación: ", associationName);
   const [asociacionInfo, setAsociacionInfo] = useState(null);
   const { asociacion, isAuthenticated } = useAuth();
 
@@ -27,6 +28,8 @@ function AssociationPage() {
           "Error al obtener la información de la asociación: ",
           error
         );
+        //redirigir a la página de error
+        window.location.href = "/"; //provisional
       }
     };
     fetchAssociationInfo();
@@ -59,16 +62,16 @@ function AssociationPage() {
     : null;
 
   return (
-    <div>
-      <AssociationHeader />
+    <div className="">
+      <AssociationHeader associationName={associationName} />
       {isAuthenticated && <Actions onDelete={handleDelete} />}
-      <div className="container mx-auto mt-10 bg-slate-500 rounded-lg p-2">
-        <h1 className="text-center mt-5">
+      <div className="container mx-auto mt-2 bg-slate-500 rounded-lg p-2">
+        <h1 className="text-center mt-2">
           Bienvenido: <span className="text-xl">{associationName} </span>
         </h1>
         <AssociationInfo
           info={asociacionInfo}
-          isAuthenticated={true}
+          isAuthenticated={isAuthenticated}
           additionalInfo={additionalInfo}
         />
       </div>
