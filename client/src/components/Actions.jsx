@@ -17,15 +17,15 @@ const Actions = ({ onDelete }) => {
   };
 
   return (
-    <div className="bg-white p-5 rounded-md m-10 flex justify-between items-center border-2 border-orange-500">
+    <div className="bg-white p-5 rounded-md  flex justify-between items-center border-2 border-orange-500">
       <ButtonOnClick
         text="Añadir Información al Perfil"
         onClick={handleAddInfo}
       />
       <ButtonOnClick text="Cerrar sesión" onClick={handleSignOut} />
-      (onDelete && (
-      <ButtonOnClick text="Borrar Asociación" onClick={onDelete} />
-      ))
+      {onDelete && (
+        <ButtonOnClick text="Borrar Asociación" onClick={onDelete} />
+      )}
     </div>
   );
 };

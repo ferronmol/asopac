@@ -10,10 +10,12 @@ import HomePage from "./pages/HomePage";
 import UserPage from "./pages/userPages/UserPage";
 import RegisterUserPage from "./pages/userPages/RegisterUserPage";
 import LoginUserPage from "./pages/userPages/LoginUserPage";
+import AssociationLayout from "./pages/AssociationLayout";
 import AddAssociationInfoPage from "./pages/AddAssociationInfoPage";
-
 import ProtectedRoute from "./ProtectedRoute";
 import AboutPage from "./pages/AboutPage";
+import ExternalDataPage from "./pages/ExternalDataPage";
+//import ExternalDataPage from "./pages/ExternalDataPage";
 
 function App() {
   return (
@@ -28,22 +30,29 @@ function App() {
             <Route path="/association/logout" element={<LogoutPage />} />
             <Route path="/association/about" element={<AboutPage />} />
 
-            {/* Rutas públicas y privadas de las asociaciónes */}
+            {/* Rutas de las asociaciónes */}
             <Route
               path="/association/:associationName"
-              element={<AssociationPage />}
-            />
-            {/* Rutas públicas de usuarios */}
-            <Route
-              path="/users/register/:associationName"
-              element={<RegisterUserPage />}
-            />
-            <Route path="/users/register" element={<RegisterUserPage />} />
-            <Route path="/users/login" element={<LoginUserPage />} />
-            <Route path="/users/:username" element={<UserPage />} />
-            <Route path="/users/logout" element={<LogoutPage />} />
+              element={<AssociationLayout />}
+            >
+              <Route index element={<AssociationPage />} />
+              <Route path="info" element={<AssociationPage />} />
+              <Route path="add-info" element={<AddAssociationInfoPage />} />
+              <Route path="external-data" element={<ExternalDataPage />} />
+
+              {/* Rutas de usuarios  dentro de la asociacion*/}
+              <Route
+                path="users/register/:associationName"
+                element={<RegisterUserPage />}
+              />
+              <Route path="users/register" element={<RegisterUserPage />} />
+              <Route path="users/login" element={<LoginUserPage />} />
+              <Route path="users/:username" element={<UserPage />} />
+              <Route path="users/logout" element={<LogoutPage />} />
+            </Route>
 
             {/* Rutas protegidas de la asociación y gestion de usuarios */}
+
             <Route element={<ProtectedRoute />}>
               <Route
                 path="/association/:associationName"

@@ -5,13 +5,12 @@ import {
   deleteAssociationRequest,
 } from "../api/association";
 import { useEffect, useState } from "react";
-import AssociationHeader from "../components/AssociationHeader";
 import Actions from "../components/Actions";
 import AssociationInfo from "../components/AssociationInfo";
 
 function AssociationPage() {
   const { associationName } = useParams();
-  console.log("Nombre de la asociación: ", associationName);
+  //console.log("Nombre de la asociación: ", associationName);
   const [asociacionInfo, setAsociacionInfo] = useState(null);
   const { asociacion, isAuthenticated } = useAuth();
 
@@ -62,8 +61,7 @@ function AssociationPage() {
     : null;
 
   return (
-    <div className="">
-      <AssociationHeader associationName={associationName} />
+    <div className="flex-1 p-2">
       {isAuthenticated && <Actions onDelete={handleDelete} />}
       <div className="container mx-auto mt-2 bg-slate-500 rounded-lg p-2">
         <h1 className="text-center mt-2">
