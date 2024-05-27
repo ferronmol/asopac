@@ -16,11 +16,15 @@ export async function getNewsByAssociation(
     if (!associationName) {
       throw new Error("Association name is required");
     }
+    if (!maxResults) {
+      throw new Error("Max results is required");
+    }
+    if (!Array.isArray(keywords)) {
+      throw new Error("Keywords must be an array");
+    }
+    const defaultKeywords = ["enfermedad", "pacientes"];
     const allkeywords = [
-      associationName.trim(),
-      "enfermedad",
-      "pacientes",
-      ...keywords,
+      ...new Set([...defaultKeywords, ...keywords, associationName]),
     ];
     const query = allkeywords.join(" OR ");
     const newskey = "e0a1ccd8efd54f3f91ef2cbb562ab56c";
@@ -42,4 +46,3 @@ export async function getNewsByAssociation(
     throw error;
   }
 }
-// Path: client/src/api/association.js

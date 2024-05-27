@@ -11,7 +11,13 @@ const ExternalDataPage = () => {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        const data = await getNewsByAssociation(associationName, 20);
+        const maxResults = 20;
+        const keywords = ["enfermedad", "pacientes"];
+        const data = await getNewsByAssociation(
+          associationName,
+          keywords,
+          maxResults
+        );
         console.log("Data: ", data.articles, "Keyword: ", data.keyword);
         setNews(data.articles);
         setLoading(false);

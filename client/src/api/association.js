@@ -9,17 +9,17 @@ const API = axios.create({
 });
 
 /**
- * Función para hacer una petición al backend para obtener la información publica de una asociación
+ * Función para obtener la información publica de una asociación por su associationName
  * @param {String} associationName - Nombre de la asociación
- * @returns
+ * @returns {Promise} La información de la asociación con message y data
  */
 export const getAssociationInfoRequest = async (associationName) => {
   const response = await API.get(`/association/${associationName}`);
   return response.data;
 };
 /**
- * Función para hacer una petición al backend  de todas las asociaciones (para asopacpage)
- * @returns
+ * Función para  todas las asociaciones (para asopacpage)
+ * @returns {Promise} La información de la asociación con message y data
  */
 export const getAllAssociationsRequest = async () => {
   const response = await API.get("/association");
@@ -29,7 +29,7 @@ export const getAllAssociationsRequest = async () => {
 /**
  * Funcion para obtener TODA la informacion de una asociacion por su id
  * @param {String} associationId - Id de la asociación
- * @returns
+ * @returns {Promise} La información de la asociación con message y data
  */
 export const getAssociationByIdRequest = async (associationId) => {
   const response = await API.get(`/association/id/${associationId}`);
@@ -41,6 +41,7 @@ export const getAssociationByIdRequest = async (associationId) => {
  * @param {String} associationName - Nombre de la asociación
  * @returns  La información de la asociación con message y data
  */
+
 export const getAssociationByNameRequest = async (associationName) => {
   try {
     const encodedAssociationName = encodeURIComponent(associationName);
@@ -57,9 +58,9 @@ export const getAssociationByNameRequest = async (associationName) => {
 };
 
 /**
- * Funcion para borrar una asociacion
+ * Funcion para borrar una asociacion por su id
  * @param {String} associationId - Id de la asociación
- * @returns
+ * @returns {Promise} La información de la asociación
  */
 
 export const deleteAssociationRequest = async (associationId) => {
@@ -68,6 +69,23 @@ export const deleteAssociationRequest = async (associationId) => {
     return response.data;
   } catch (error) {
     console.error("Error al borrar la asociación: ", error);
+    throw error;
+  }
+};
+
+/**
+ * Funcion para añadir informacion a una asociacion a traves de un formulario
+ * @param {Object} data - Información de la asociación
+ * @param {String} associationName - Nombre de la asociación
+ * @returns {Promise} La información de la asociación
+ */
+
+export const addAssociationInfoRequest = async (data, associationName) => {
+  try {
+    const response = await API.post(`/association/${associationName}`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error al añadir información a la asociación: ", error);
     throw error;
   }
 };
