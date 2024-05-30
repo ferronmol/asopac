@@ -32,7 +32,7 @@ const ExternalDataPage = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-5 text-center">
-        Noticias sobre {associationName}{" "}
+        Noticias en {associationName}{" "}
       </h1>
       {loading ? (
         <p>Loading...</p>

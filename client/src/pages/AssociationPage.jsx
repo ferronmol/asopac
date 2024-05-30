@@ -65,7 +65,7 @@ function AssociationPage() {
       {isAuthenticated && <Actions onDelete={handleDelete} />}
       <div className="container mx-auto mt-2 bg-slate-500 rounded-lg p-2">
         <h1 className="text-center mt-2">
-          Bienvenido: <span className="text-xl">{associationName} </span>
+          BIENVENIDO A <span className="text-xl">{associationName} </span>
         </h1>
         <AssociationInfo
           info={asociacionInfo}

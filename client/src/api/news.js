@@ -27,7 +27,8 @@ export async function getNewsByAssociation(
       ...new Set([...defaultKeywords, ...keywords, associationName]),
     ];
     const query = allkeywords.join(" OR ");
-    const newskey = "e0a1ccd8efd54f3f91ef2cbb562ab56c";
+    const newskey = import.meta.env.VITE_NEWS_API_KEY;
+    console.log(newskey);
     if (!newskey) {
       throw new Error("News API key is required");
     }

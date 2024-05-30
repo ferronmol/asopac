@@ -39,6 +39,10 @@ function App() {
               <Route path="info" element={<AssociationPage />} />
               <Route path="add-info" element={<AddAssociationInfoPage />} />
               <Route path="external-data" element={<ExternalDataPage />} />
+              <Route
+                path="others"
+                element={<h1>Otras asociaciones de pacientes en España </h1>}
+              />
 
               {/* Rutas de usuarios  dentro de la asociacion*/}
               <Route
