@@ -97,7 +97,6 @@ const AddInfoPage = () => {
             name="city"
             register={register}
             errors={errors}
-            validation={{ required: "Este campo es requerido" }}
             placeholder="Las Rozas"
           />
           <InputForm
@@ -105,7 +104,6 @@ const AddInfoPage = () => {
             name="state"
             register={register}
             errors={errors}
-            validation={{ required: "Este campo es requerido" }}
             placeholder="Madrid"
           />
           <InputForm

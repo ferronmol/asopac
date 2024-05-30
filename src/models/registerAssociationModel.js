@@ -44,6 +44,16 @@ const RegisterAssociationSchema = new Schema(
       trim: true,
       message: "El teléfono debe tener al menos 9 caracteres",
     },
+    description: {
+      type: String,
+      default: "",
+      message: "La descripción es muy importante",
+    },
+    Keywords: {
+      type: Array,
+      default: [],
+      message: "Las palabras clave son muy importantes",
+    },
     createdAt: {
       type: Date,
       // En zona horaria UTC + 2

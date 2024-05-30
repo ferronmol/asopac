@@ -71,7 +71,46 @@ export const getAllAssociations = async (req, res) => {
   }
 };
 
-export default {
-  getAssociationByName,
-  getAllAssociations,
+/**
+ * Funcion para añadir información de una asociación
+ * @param {Object} req - Request object con associationname y data
+ * @param {Object} res - Response object
+ */
+export const addAdditionalInfo = async (req, res) => {
+  try {
+    // Extraer datos del cuerpo de la solicitud
+    const { associationName } = req.params;
+    const { data } = req.body;
+
+    // Verificar si la asociación existe
+    const association = await RegisterAssociation.findOne({ associationName });
+    if (!association) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Asociación no encontrada" });
+    }
+
+    // actualiza la información adicional de la asociación
+    association.description = data.description || "";
+    association.Keywords = data.Keywords || [];
+
+    association.phone = data.phone || "";
+    association.address = data.address || "";
+
+    // Guardar los cambios en la base de datos
+    await association.save();
+
+    // Responder con éxito
+    return res.status(200).json({
+      success: true,
+      message: "Información adicional agregada correctamente",
+    });
+  } catch (error) {
+    // Manejar errores
+    console.error("Error al agregar información adicional:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error del servidor al agregar información adicional",
+    });
+  }
 };

@@ -21,7 +21,7 @@ function InputForm({
         {...register(name, validation)}
         placeholder={placeholder}
         autoComplete={autoComplete}
-        className="w-full bg-orange-700 text-white px-4 py-2 rounded-md mt-1"
+        className="w-full bg-orange-700 text-white px-4 py-2 rounded-md mt-1 placeholder-gray-500"
       />
       {errors[name] && (
         <span className="text-red-600">

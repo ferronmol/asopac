@@ -13,7 +13,7 @@ export const register = async (req, res) => {
       email,
     });
     if (associationFound) {
-      errors.push("  El correo electrónico ya está registrado    ");
+      errors.push("  El correo electrónico ya está en uso    ");
     }
     //tampooco se puede registrar una asociación con el mismo nombre
     const associationNameFound = await RegisterAssociation.findOne({
@@ -34,6 +34,8 @@ export const register = async (req, res) => {
       password: passwordHash,
       address: req.body.adress || null,
       phone: req.body.phone || null,
+      //description: req.body.description || "",
+      //Keywords: req.body.Keywords || [],
     });
 
     const savedAssociation = await newRegisterAssociation.save();
@@ -209,6 +211,8 @@ export const getAssociationById = async (req, res) => {
         Telefono: associationFound.phone,
         Direccion: associationFound.address,
         createdAt: associationFound.createdAt,
+        // Descripcion: associationFound.description || "",
+        //Keywords: associationFound.Keywords || [],
       },
     });
   } catch (error) {
