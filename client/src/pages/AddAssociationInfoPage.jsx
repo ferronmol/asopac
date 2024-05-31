@@ -15,15 +15,34 @@ const AddInfoPage = () => {
   const [sucessMessage, setSucessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const onSubmit = async (data) => {
-    // Transformar palabras clave en un array
-    data.keywords = data.keywords.split(",").map((keyword) => keyword.trim());
+  const onSubmit = async (formdata) => {
+    const data = {
+      phone: formdata.phone,
+      address: {
+        street: formdata.street || "",
+        number: formdata.number || "",
+        city: formdata.city || "",
+        state: formdata.state || "",
+        postalCode: formdata.postalCode || "",
+      },
+      description: formdata.description || "",
+      keywords: formdata.keywords.split(",").map((keyword) => keyword.trim()),
+    };
 
+    console.log("Data a enviar: ", data);
     try {
-      const response = await addAssociationInfoRequest(data, associationName);
-      console.log("Respuesta de la API de asociación: ", response.data);
+      const response = await addAssociationInfoRequest(
+        { data },
+        associationName
+      );
+      console.log("Respuesta de la API de asociación: ", response);
+      console.log(
+        "Mensaje de la API de asociación: ",
+        response.message,
+        response.success
+      );
 
-      if (response.message === "success") {
+      if (response && response.success === true) {
         alert("Información añadida correctamente");
         setSucessMessage("Información añadida correctamente");
         setErrorMessage("");
@@ -48,22 +67,14 @@ const AddInfoPage = () => {
           {sucessMessage && <p className="text-green-500">{sucessMessage}</p>}
 
           {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-          <div className="mb-4">
-            <label htmlFor="description" className="block text-gray-300 mb-2">
-              Descripción:
-            </label>
-            <textarea
-              id="description"
-              {...register("description", {
-                required: "Este campo es requerido",
-              })}
-              className="w-full p-2 border border-gray-300 rounded-md bg-gray-800 text-white"
-              placeholder="Asociación de pacientes de enfermos de Alzheimer en Madrid"
-            ></textarea>
-            {errors.description && (
-              <p className="text-red-500">{errors.description.message}</p>
-            )}
-          </div>
+          <InputForm
+            label="Descripción"
+            name="description"
+            register={register}
+            errors={errors}
+            validation={{}}
+            placeholder="Descripción de la asociación"
+          />
           <InputForm
             label="Teléfono"
             name="phone"

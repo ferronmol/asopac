@@ -92,10 +92,10 @@ export const addAdditionalInfo = async (req, res) => {
 
     // actualiza la información adicional de la asociación
     association.description = data.description || "";
-    association.Keywords = data.Keywords || [];
+    association.keywords = data.keywords || [];
 
     association.phone = data.phone || "";
-    association.address = data.address || "";
+    association.address = data.address || {};
 
     // Guardar los cambios en la base de datos
     await association.save();

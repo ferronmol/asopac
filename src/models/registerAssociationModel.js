@@ -49,7 +49,7 @@ const RegisterAssociationSchema = new Schema(
       default: "",
       message: "La descripción es muy importante",
     },
-    Keywords: {
+    keywords: {
       type: Array,
       default: [],
       message: "Las palabras clave son muy importantes",
