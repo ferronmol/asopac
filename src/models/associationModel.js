@@ -3,7 +3,7 @@ import Address from "./addressModel.js";
 
 const Schema = mongoose.Schema;
 
-const RegisterAssociationSchema = new Schema(
+const AssociationSchema = new Schema(
   {
     associationName: {
       type: String,
@@ -54,6 +54,11 @@ const RegisterAssociationSchema = new Schema(
       default: [],
       message: "Las palabras clave son muy importantes",
     },
+    updatedAt: {
+      type: Date,
+      // En zona horaria UTC + 2
+      default: () => new Date(Date.now() + 7200000),
+    },
     createdAt: {
       type: Date,
       // En zona horaria UTC + 2
@@ -66,9 +71,6 @@ const RegisterAssociationSchema = new Schema(
   { collection: "Associations" } //nombre de la colección en la base de datos
 );
 
-const RegisterAssociation = mongoose.model(
-  "RegisterAssociation",
-  RegisterAssociationSchema
-);
+const RegisterAssociation = mongoose.model("Associations", AssociationSchema);
 
 export default RegisterAssociation;

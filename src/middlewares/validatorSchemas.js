@@ -1,3 +1,9 @@
+/**
+ * funcion para validar el schema
+ * @param {*} schema
+ * @returns
+ */
+
 export const validateSchema = (schema) => (req, res, next) => {
   try {
     //comparo mi schema con los datos que me llegan en el body

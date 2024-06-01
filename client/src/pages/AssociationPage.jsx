@@ -20,8 +20,8 @@ function AssociationPage() {
       try {
         const response = await getAssociationInfoRequest(associationName);
         setAsociacionInfo(response.data);
-        //console.log("Información de la asociación: ", response.data);
-        //console.log(asociacion);
+        console.log("Información de la asociación: ", response.data);
+        console.log(asociacion);
       } catch (error) {
         console.error(
           "Error al obtener la información de la asociación: ",
@@ -57,6 +57,7 @@ function AssociationPage() {
     ? {
         id: asociacion.id,
         createdAt: asociacion.createdAt,
+        updatedAt: asociacion.updatedAt,
       }
     : null;
 

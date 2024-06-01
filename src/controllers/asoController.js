@@ -1,5 +1,5 @@
 // Función para mostrar la información pública de una asociación por su nombre
-import RegisterAssociation from "../models/registerAssociationModel.js";
+import RegisterAssociation from "../models/associationModel.js";
 
 export const getAssociationByName = async (req, res) => {
   const { associationName } = req.params; // Obtener el nombre de la asociación de los parámetros de la URL
@@ -20,16 +20,20 @@ export const getAssociationByName = async (req, res) => {
       email,
       phone,
       address,
+      description,
+      keywords,
     } = associationFound;
 
     return res.status(200).json({
-      message: "Información pública de la asociación",
+      message: "Información de la asociación",
       data: {
         associateId: associationFound._id,
         associationName,
         email,
         phone,
         address,
+        keywords,
+        description,
       },
     });
   } catch (error) {
@@ -56,6 +60,9 @@ export const getAllAssociations = async (req, res) => {
       phone: association.phone,
       address: association.address,
       createdAt: association.createdAt,
+      description: association.description,
+      keywords: association.keywords,
+      updatedAt: association.updatedAt,
     }));
 
     return res.status(200).json({
@@ -93,9 +100,9 @@ export const addAdditionalInfo = async (req, res) => {
     // actualiza la información adicional de la asociación
     association.description = data.description || "";
     association.keywords = data.keywords || [];
-
     association.phone = data.phone || "";
     association.address = data.address || {};
+    association.updatedAt = new Date();
 
     // Guardar los cambios en la base de datos
     await association.save();

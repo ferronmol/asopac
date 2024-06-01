@@ -1,4 +1,4 @@
-import RegisterAssociation from "../models/registerAssociationModel.js";
+import RegisterAssociation from "../models/associationModel.js";
 
 export const updateAssociationAddress = async (req, res) => {
   const { id } = req.params;

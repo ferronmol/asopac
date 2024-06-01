@@ -20,6 +20,7 @@ function RegisterPage() {
   const [successMessage, setSuccessMessage] = useState("");
 
   console.log("Nombre de la asociación: ", associationName);
+  console.log("autenticado: ", isAuthenticated);
 
   const onSubmit = async (data) => {
     try {
@@ -29,7 +30,10 @@ function RegisterPage() {
       if (res.status === 201) {
         const associationName = res.data.data.associationName;
         setSuccessMessage(res.data.message);
+
+        console.log("estado de autenticación: ", isAuthenticated);
         if (isAuthenticated === true) {
+          console.log("Autenticación correcta, redirigiendo...");
           navigate(`/association/${encodeURIComponent(associationName)}`);
         } else {
           console.log("Fallo la autenticación");

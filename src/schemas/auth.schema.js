@@ -1,5 +1,5 @@
 import zod from "zod";
-import RegisterAssociation from "../models/registerAssociationModel.js";
+import RegisterAssociation from "../models/associationModel.js";
 
 const registerSchema = zod.object({
   email: zod

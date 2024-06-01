@@ -1,8 +1,9 @@
-import RegisterAssociation from "../models/registerAssociationModel.js";
+import RegisterAssociation from "../models/associationModel.js";
 import bcrypt from "bcryptjs";
 import { createAccessToken } from "../libs/jwt.js";
 import { formatDate } from "../libs/formatDate.js";
 import jwt from "jsonwebtoken";
+import { updateAssociationAddress } from "./asoAddressController.js";
 
 export const register = async (req, res) => {
   const { associationName, email, password } = req.body;
@@ -47,7 +48,8 @@ export const register = async (req, res) => {
     });
 
     //formateo la fecha de creación
-    const formattedDate = formatDate(savedAssociation.createdAt);
+    const formattedCreateDate = formatDate(savedAssociation.createdAt);
+    const formattedUpdateDate = formatDate(savedAssociation.updatedAt);
 
     res.status(201).json({
       message: "Asociación registrada exitosamente",
@@ -55,7 +57,8 @@ export const register = async (req, res) => {
         id: savedAssociation._id,
         associationName: savedAssociation.associationName,
         email: savedAssociation.email,
-        createdAt: formattedDate,
+        createdAt: formattedCreateDate,
+        updatedAt: formattedUpdateDate,
       },
     });
   } catch (error) {
@@ -142,6 +145,9 @@ export const profile = async (req, res) => {
         associationName: associationFound.associationName,
         email: associationFound.email,
         createdAt: associationFound.createdAt,
+        description: associationFound.description || "",
+        keywords: associationFound.keywords || [],
+        updatedAt: associationFound.updatedAt,
       },
     });
   } catch (error) {
@@ -178,6 +184,9 @@ export const verifyToken = async (req, res) => {
           associationName: associationFound.associationName,
           email: associationFound.email,
           createdAt: associationFound.createdAt,
+          description: associationFound.description || "",
+          keywords: associationFound.keywords || [],
+          updatedAt: associationFound.updatedAt,
         },
       });
     });
@@ -211,8 +220,9 @@ export const getAssociationById = async (req, res) => {
         Telefono: associationFound.phone,
         Direccion: associationFound.address,
         createdAt: associationFound.createdAt,
-        // Descripcion: associationFound.description || "",
-        //Keywords: associationFound.Keywords || [],
+        Descripcion: associationFound.description || "",
+        Keywords: associationFound.Keywords || [],
+        updatedAt: associationFound.updatedAt,
       },
     });
   } catch (error) {
@@ -244,6 +254,7 @@ export const deleteAssociation = async (req, res) => {
         associationName: associationFound.associationName,
         email: associationFound.email,
         createdAt: associationFound.createdAt,
+        updatedAt: associationFound.updatedAt,
       },
     });
   } catch (error) {

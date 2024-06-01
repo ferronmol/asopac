@@ -33,6 +33,8 @@ export const AuthProvider = ({ children }) => {
       setAsociacion(response.data.data); // Guarda la asociación en el estado
       setIsAuthenticated(true); // Cambia el estado de autenticación a true
       setErrors(null); // Resetea el estado de errores
+      console.log("asociacion registrda: ", asociacion);
+      console.log("estado de autenticación: ", isAuthenticated);
       return response;
     } catch (error) {
       console.error("Error al registrar la asociación:", error.response.data);
