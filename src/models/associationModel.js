@@ -67,8 +67,8 @@ const AssociationSchema = new Schema(
   },
   {
     timestamps: true,
-  },
-  { collection: "Associations" } //nombre de la colección en la base de datos
+    collection: "associations",
+  } //nombre de la colección en la base de datos
 );
 
 const RegisterAssociation = mongoose.model("Associations", AssociationSchema);

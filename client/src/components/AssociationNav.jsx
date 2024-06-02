@@ -1,4 +1,9 @@
-import { NavLink, Link } from "react-router-dom";
+/*
+ * Este componente para barra de navegación parra USUARIOS
+ * @module Nav
+ */
+
+import { NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
@@ -16,17 +21,29 @@ const NavLinks = ({ associationName, isAuthenticated }) => {
 
   return (
     <>
-      <Link to={`/users/register/${associationName}`} className="nav-link">
+      <NavLink
+        to={(associationName, `/association/${associationName}/users/register`)}
+        className={activeStyleCallback({ isActive: false })}
+      >
         Registrar Usuario
-      </Link>
-      <NavLink to="/users/login" className={activeStyleCallback}>
+      </NavLink>
+      <NavLink
+        to={(associationName, `/association/${associationName}/users/login`)}
+        className={activeStyleCallback({ isActive: false })}
+      >
         Iniciar Usuario
       </NavLink>
-      <NavLink to="/association/profile" className={activeStyleCallback}>
+      <NavLink
+        to={`/associations/${associationName}`}
+        className={activeStyleCallback({ isActive: true })}
+      >
         Sobre Nosotros
       </NavLink>
       {!isAuthenticated && (
-        <NavLink to="/association/login" className={activeStyleCallback}>
+        <NavLink
+          to="/association/login"
+          className={activeStyleCallback({ isActive: false })}
+        >
           Zona Privada
         </NavLink>
       )}
@@ -46,6 +63,7 @@ const AssociationNav = ({ associationName }) => {
     <>
       <nav className=" flex w-1/3 justify-end">
         <div className="justify-between hidden md:flex w-full">
+          {/* Aquí se llama a NavLinks y le pasamos las props */}
           <NavLinks
             associationName={associationName}
             isAuthenticated={isAuthenticated}

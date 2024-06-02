@@ -41,6 +41,9 @@ export const register = async (req, res) => {
 
     const savedAssociation = await newRegisterAssociation.save();
 
+    /**
+     * Guardamos el token en una cookie para que el usuario pueda navegar por la aplicacion
+     */
     const token = await createAccessToken({ id: savedAssociation._id });
     res.cookie("token", token, {
       sameSite: "none",
@@ -49,7 +52,6 @@ export const register = async (req, res) => {
 
     //formateo la fecha de creación
     const formattedCreateDate = formatDate(savedAssociation.createdAt);
-    const formattedUpdateDate = formatDate(savedAssociation.updatedAt);
 
     res.status(201).json({
       message: "Asociación registrada exitosamente",
@@ -58,7 +60,6 @@ export const register = async (req, res) => {
         associationName: savedAssociation.associationName,
         email: savedAssociation.email,
         createdAt: formattedCreateDate,
-        updatedAt: formattedUpdateDate,
       },
     });
   } catch (error) {

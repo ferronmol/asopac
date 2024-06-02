@@ -9,6 +9,7 @@ import ButtonLink from "../components/common/ButtonLink";
 
 function RegisterPage() {
   const { associationName } = useParams();
+  console.log("Nombre de la asociación en registerpage: ", associationName);
   const {
     register,
     handleSubmit,

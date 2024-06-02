@@ -1,5 +1,5 @@
 import { useUser } from "../../context/UserContext";
-import { useAuth } from "../../context/AuthContext";
+//import { useAuth } from "../../context/AuthContext";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getUserInfoRequest } from "../../api/user";
@@ -13,9 +13,9 @@ function UserPage() {
     user: userContext,
     isAuthenticated,
     signoutUser,
-    association,
+    //association,
   } = useUser();
-  const { asociacion } = useAuth();
+  //const { asociacion } = useAuth();
 
   useEffect(() => {
     // Función para obtener la información del usuario

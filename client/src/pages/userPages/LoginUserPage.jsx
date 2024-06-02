@@ -7,26 +7,26 @@ import InputForm from "../../components/common/InputForm";
 import ButtonLink from "../../components/common/ButtonLink";
 
 const LoginUserPage = () => {
-  const { login } = useUser();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { isAuthenticated, errors: loginErrors, user } = useUser();
+  const { login, isAuthenticated, errors: loginErrors } = useUser();
   const navigate = useNavigate();
-  const [userName, setUserName] = useState(null);
+  const [user, setUser] = useState(null);
 
   const onSubmit = async (data) => {
-    //console.log("data", data);
+    console.log("data", data);
     try {
       const res = await login(data);
       if (res.status === 200) {
-        setUserName(res.data.data.userName);
+        setUser(res.data.data.userName);
         if (isAuthenticated === true) {
           navigate(`/association/${res.data.data.associationName}`);
         } else {
           console.log("Fallo la autenticación");
+          console.log("user", user);
         }
       }
     } catch (error) {
@@ -40,6 +40,7 @@ const LoginUserPage = () => {
     if (isAuthenticated && user) {
       navigate(`/association/${user.associationName}`);
       console.log("El usuario tiene autenticacion: ", isAuthenticated);
+      console.log("El usuario es: ", user);
     }
   }, [isAuthenticated, navigate, user]);
 

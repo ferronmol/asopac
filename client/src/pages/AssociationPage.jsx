@@ -12,7 +12,9 @@ function AssociationPage() {
   const { associationName } = useParams();
   //console.log("Nombre de la asociación: ", associationName);
   const [asociacionInfo, setAsociacionInfo] = useState(null);
+  console.log("Información de la asociación: ", asociacionInfo);
   const { asociacion, isAuthenticated } = useAuth();
+  console.log("autenticado: ", isAuthenticated);
 
   useEffect(() => {
     // Función para obtener la información de la asociación
@@ -21,7 +23,6 @@ function AssociationPage() {
         const response = await getAssociationInfoRequest(associationName);
         setAsociacionInfo(response.data);
         console.log("Información de la asociación: ", response.data);
-        console.log(asociacion);
       } catch (error) {
         console.error(
           "Error al obtener la información de la asociación: ",
@@ -52,7 +53,12 @@ function AssociationPage() {
       console.error("Error al borrar la asociación: ", error);
     }
   };
-
+  /**
+   * Información adicional de la asociación
+   * @type {Object}
+   * @property {String} id - Id de la asociación
+   * @property {String} createdAt - Fecha de creación de la asociación
+   */
   const additionalInfo = isAuthenticated
     ? {
         id: asociacion.id,

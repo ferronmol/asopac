@@ -1,15 +1,15 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { useUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import AssociationHeader from "../../components/AssociationHeader";
 import InputForm from "../../components/common/InputForm";
 import ButtonLink from "../../components/common/ButtonLink";
+//import AssociationHeader from "../../components/AssociationHeader";
+import { useUser } from "../../context/UserContext";
+//import { AuthContext } from "../../context/AuthContext";
 
 function RegisterUserPage() {
   const { associationName } = useParams();
-  console.log("Nombre de la asociación: ", associationName);
 
   const {
     register,
@@ -28,7 +28,7 @@ function RegisterUserPage() {
       data.createdAt = new Date();
 
       const res = await signupUser(data, associationName);
-      //console.log("Respuesta del servidor: ", res);
+      console.log("Respuesta del servidor: ", res);
       console.log("Datos del usuario registrado: ", res.data.data);
       console.log("Errores de registro: ", regErrors);
 
@@ -58,7 +58,6 @@ function RegisterUserPage() {
 
   return (
     <div>
-      <AssociationHeader />
       <div>
         <div className="bg-zinc-800 max-w-lg p-10 rounded-md mx-auto mt-10 ">
           <h1 className="text-center mt-5 font-serif text-2xl font-bold">

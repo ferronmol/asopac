@@ -15,7 +15,9 @@ import AddAssociationInfoPage from "./pages/AddAssociationInfoPage";
 import ProtectedRoute from "./ProtectedRoute";
 import AboutPage from "./pages/AboutPage";
 import ExternalDataPage from "./pages/ExternalDataPage";
-//import ExternalDataPage from "./pages/ExternalDataPage";
+import OtherAssociationsPage from "./pages/OtherAssociationsPage";
+import LinksPage from "./pages/LinksPage";
+import MembersPage from "./pages/MembersPage";
 
 function App() {
   return (
@@ -39,14 +41,13 @@ function App() {
               <Route path="info" element={<AssociationPage />} />
               <Route path="add-info" element={<AddAssociationInfoPage />} />
               <Route path="external-data" element={<ExternalDataPage />} />
-              <Route
-                path="others"
-                element={<h1>Otras asociaciones de pacientes en España </h1>}
-              />
+              <Route path="others" element={<OtherAssociationsPage />} />
+              <Route path="members" element={<MembersPage />} />
+              <Route path="links" element={<LinksPage />} />
 
               {/* Rutas de usuarios  dentro de la asociacion*/}
               <Route
-                path="users/register/:associationName"
+                path="/association/:associationName/users/register"
                 element={<RegisterUserPage />}
               />
               <Route path="users/register" element={<RegisterUserPage />} />
@@ -72,8 +73,8 @@ function App() {
               <Route path="/users/:Id" element={<UserPage />} />*/}
             </Route>
 
-            {/* ruta de catch-all */}
-            <Route path="*" element={<HomePage />} />
+            {/* ruta de catch-all 
+            <Route path="*" element={<HomePage />} />*/}
           </Routes>
         </UserProvider>
       </BrowserRouter>
