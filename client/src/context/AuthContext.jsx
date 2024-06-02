@@ -21,6 +21,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [asociacion, setAsociacion] = useState(null);
+  const [associationName, setAssociationName] = useState(null); //eslint-disable-line
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,9 +32,10 @@ export const AuthProvider = ({ children }) => {
       const response = await registerRequest(asociacionData);
       console.log("Respuesta de asociacion registrada: ", response.data);
       setAsociacion(response.data.data); // Guarda la asociación en el estado
+      setAssociationName(response.data.data.associationName); // Guarda el nombre de la asociación en el estado
       setIsAuthenticated(true); // Cambia el estado de autenticación a true
       setErrors(null); // Resetea el estado de errores
-      console.log("asociacion registrda: ", asociacion);
+      console.log("asociacion registrada: ", asociacion);
       console.log("estado de autenticación: ", isAuthenticated);
       return response;
     } catch (error) {
@@ -95,14 +97,17 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     async function checkLogin() {
       const cookies = Cookies.get();
+      console.log("Cookies: ", cookies);
 
       if (!cookies.token) {
         setIsAuthenticated(false);
+        console.log("No hay token en las cookies");
         return setAsociacion(null);
       }
 
       try {
         const res = await verifyTokenRequest(cookies.token);
+        console.log("Respuesta de verificación de token: ", res.data.data);
 
         if (!res.data.data) {
           setIsAuthenticated(false);
@@ -132,6 +137,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         asociacion,
         isAuthenticated,
+        associationName,
         errors,
         signout,
       }}

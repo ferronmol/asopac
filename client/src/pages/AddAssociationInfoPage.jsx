@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import InputForm from "../components/common/InputForm";
 import ButtonLink from "../components/common/ButtonLink";
 import { addAssociationInfoRequest } from "../api/association";
@@ -7,6 +7,7 @@ import { useState } from "react";
 
 const AddInfoPage = () => {
   const { associationName } = useParams();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -46,6 +47,8 @@ const AddInfoPage = () => {
         alert("Información añadida correctamente");
         setSucessMessage("Información añadida correctamente");
         setErrorMessage("");
+
+        navigate(`/association/${associationName}`);
       }
     } catch (error) {
       console.error("Error al añadir información a la asociación: ", error);

@@ -1,6 +1,7 @@
 const AssociationInfo = ({ info, isAuthenticated, additionalInfo }) => {
   console.log(info); // info publica quitar id
-  console.log("additional", additionalInfo); //createAt e id
+  console.log("isAuthenticated (si false no additionalInfo)", isAuthenticated); //de associationPage(si esta autenticado
+  console.log("additionalInfo", additionalInfo); //de associationPage(si esta autenticado)
   if (!info) return null;
 
   const keywordsFormatted = info.keywords.join(", ");
