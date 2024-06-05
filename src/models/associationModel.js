@@ -71,6 +71,6 @@ const AssociationSchema = new Schema(
   } //nombre de la colección en la base de datos
 );
 
-const RegisterAssociation = mongoose.model("Associations", AssociationSchema);
+const Association = mongoose.model("Association", AssociationSchema);
 
-export default RegisterAssociation;
+export default Association;

@@ -19,12 +19,7 @@ router.get("/users/info/:id", getUserById);
 router.get("/users/:username", getUserByUsername);
 
 router.post("/users/register", validateSchema(createUserSchema), register);
-router.post(
-  "/users/login",
-  authRequired,
-  validateSchema(createUserSchema),
-  login
-);
+router.post("/users/login", login);
 router.post("/users/logout", logoutUser);
 router.delete("/users/:id", authRequired, deleteUser);
 

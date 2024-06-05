@@ -64,7 +64,7 @@ const UserSchema = new Schema(
     timestamps: true,
   },
 
-  { collection: "Users" } //nombre de la colección en la base de datos
+  { collection: "users" } //nombre de la colección en la base de datos
 );
 
 const User = mongoose.model("User", UserSchema);

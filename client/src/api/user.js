@@ -21,7 +21,7 @@ export const registerUserRequest = async (user) => {
  * @param {Object} user - Datos de la asociación para iniciar sesión
  * @returns
  */
-export const loginRequest = async (user) => {
+export const loginUserRequest = async (user) => {
   const response = await API.post("/users/login", user);
   return response;
 };

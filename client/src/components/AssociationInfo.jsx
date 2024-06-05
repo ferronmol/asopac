@@ -1,3 +1,5 @@
+import formatDate from "../assets/formatDate";
+
 const AssociationInfo = ({ info, isAuthenticated, additionalInfo }) => {
   console.log(info); // info publica quitar id
   console.log("isAuthenticated (si false no additionalInfo)", isAuthenticated); //de associationPage(si esta autenticado
@@ -5,6 +7,10 @@ const AssociationInfo = ({ info, isAuthenticated, additionalInfo }) => {
   if (!info) return null;
 
   const keywordsFormatted = info.keywords.join(", ");
+  const formateCreatedArt = additionalInfo
+    ? formatDate(additionalInfo.createdAt)
+    : null;
+
   return (
     <div className="bg-gray-500 p-5 rounded-md mt-0">
       <h3 className="ml-5 text-lg bg-orange-600 p-2 rounded-md">
@@ -34,7 +40,7 @@ const AssociationInfo = ({ info, isAuthenticated, additionalInfo }) => {
             <ul className="list-disc ml-10 mt-2">
               <li>ID: {additionalInfo.id}</li>
               <li>Palabras clave: {keywordsFormatted}</li>
-              <li>Asociacion creada: {additionalInfo.createdAt}</li>
+              <li>Asociacion creada: {formateCreatedArt}</li>
               <li>Asociación modificada: {additionalInfo.updatedAt}</li>
             </ul>
           </div>

@@ -40,6 +40,7 @@ const updateUserSchema = zod.object({
     .min(3),
   email: zod
     .string({
+      required_error: "El correo electrónico es requerido",
       message: "El correo electrónico debe tener un formato válido",
     })
     .min(4)
@@ -49,7 +50,11 @@ const updateUserSchema = zod.object({
     .email({ message: "El correo electrónico no es válido" }),
 
   password: zod
-    .string({ message: "La contraseña debe tener al menos 6 caracteres" })
+
+    .string({
+      required_error: "La contraseña es requerida",
+      message: "La contraseña debe tener al menos 6 caracteres",
+    })
     .min(6)
     .max(40),
 });

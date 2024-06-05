@@ -4,9 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import InputForm from "../../components/common/InputForm";
 import ButtonLink from "../../components/common/ButtonLink";
-//import AssociationHeader from "../../components/AssociationHeader";
 import { useUser } from "../../context/UserContext";
-//import { AuthContext } from "../../context/AuthContext";
 
 function RegisterUserPage() {
   const { associationName } = useParams();
@@ -22,7 +20,7 @@ function RegisterUserPage() {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    console.log("Datos del formulario: ", data);
+    //console.log("Datos del formulario: ", data);
     console.log("Nombre de la asociación: ", associationName);
     try {
       data.createdAt = new Date();
@@ -44,7 +42,7 @@ function RegisterUserPage() {
         );
 
         setSuccessMessage(res.data.message);
-        navigate(`/users/${username}`);
+        navigate(`/association/${associationName}/members`);
       }
     } catch (error) {
       if (error.response && error.response.data) {

@@ -1,11 +1,11 @@
 // Función para mostrar la información pública de una asociación por su nombre
-import RegisterAssociation from "../models/associationModel.js";
+import Association from "../models/associationModel.js";
 
 export const getAssociationByName = async (req, res) => {
   const { associationName } = req.params; // Obtener el nombre de la asociación de los parámetros de la URL
   try {
     // Buscar la asociación por su nombre
-    const associationFound = await RegisterAssociation.findOne({
+    const associationFound = await Association.findOne({
       associationName,
     });
 
@@ -47,7 +47,7 @@ export const getAssociationByName = async (req, res) => {
 
 export const getAllAssociations = async (req, res) => {
   try {
-    const associations = await RegisterAssociation.find();
+    const associations = await Association.find();
 
     if (!associations) {
       return res.status(404).json({ message: "No hay asociaciones" });
@@ -90,7 +90,7 @@ export const addAdditionalInfo = async (req, res) => {
     const { data } = req.body;
 
     // Verificar si la asociación existe
-    const association = await RegisterAssociation.findOne({ associationName });
+    const association = await Association.findOne({ associationName });
     if (!association) {
       return res
         .status(404)

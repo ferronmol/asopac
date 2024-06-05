@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useUser } from "../../context/UserContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import InputForm from "../../components/common/InputForm";
 import ButtonLink from "../../components/common/ButtonLink";
@@ -12,21 +12,20 @@ const LoginUserPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { login, isAuthenticated, errors: loginErrors } = useUser();
+  const { signinUser, isAuthenticated, user, errors: loginErrors } = useUser();
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const { associationName } = useParams();
+  console.log("associationName: ", associationName);
 
   const onSubmit = async (data) => {
     console.log("data", data);
     try {
-      const res = await login(data);
-      if (res.status === 200) {
-        setUser(res.data.data.userName);
+      const res = await signinUser(data);
+      if (res && res.status === 200) {
+        console.log("Respuesta de login de usuario: ", res.data);
+        console.log("Usuario autenticado: ", user);
         if (isAuthenticated === true) {
-          navigate(`/association/${res.data.data.associationName}`);
-        } else {
-          console.log("Fallo la autenticación");
-          console.log("user", user);
+          console.log("El usuario está autenticado, puedo redirigirlo");
         }
       }
     } catch (error) {
@@ -38,8 +37,11 @@ const LoginUserPage = () => {
   //useEffect para redirigir al usuario a la página de usuario si ya está autenticado
   useEffect(() => {
     if (isAuthenticated && user) {
-      navigate(`/association/${user.associationName}`);
-      console.log("El usuario tiene autenticacion: ", isAuthenticated);
+      console.log(
+        "El usuario puedo redirigirlo, tiene autenticacion: ",
+        isAuthenticated
+      );
+      navigate(`/association/${associationName}/members`);
       console.log("El usuario es: ", user);
     }
   }, [isAuthenticated, navigate, user]);
@@ -57,9 +59,13 @@ const LoginUserPage = () => {
             role="alert"
           >
             <ul>
-              {loginErrors.map((error, index) => (
-                <li key={index}>{error.trim()}</li>
-              ))}
+              {Array.isArray(loginErrors) ? (
+                loginErrors.map((error, index) => (
+                  <li key={index}>{error.trim()}</li>
+                ))
+              ) : (
+                <li>{loginErrors}</li>
+              )}
             </ul>
           </div>
         )}

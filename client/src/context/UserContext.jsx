@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { registerUserRequest, loginRequest } from "../api/user";
+import { registerUserRequest, loginUserRequest } from "../api/user";
 import { getAssociationByNameRequest } from "../api/association";
 import PropTypes from "prop-types";
 import Cookies from "js-cookie";
@@ -21,12 +21,16 @@ export const UserProvider = ({ children }) => {
   const [errors, setErrors] = useState(null);
 
   const setAuthToken = (token) => {
-    Cookies.set("user-token", token, {
+    Cookies.set("tokenUser", token, {
       expires: 1,
       sameSite: "none",
       secure: true,
     });
   };
+  const removeAuthToken = () => {
+    Cookies.remove("tokenUser");
+  };
+
   //Obtengo el id de la asociacion de la que se quiere registrar el usuario por su nombre
   const getAssociationByName = async (associationName) => {
     try {
@@ -57,7 +61,7 @@ export const UserProvider = ({ children }) => {
         }
       }
       const response = await registerUserRequest(userData);
-      // console.log("Respuesta de usuario registrado: ", response.data);
+      console.log("Respuesta de usuario registrado: ", response.data);
       setUser(response.data.data);
       setIsAuthenticated(true);
       setErrors(null);
@@ -73,12 +77,13 @@ export const UserProvider = ({ children }) => {
 
   /**
    * Función para iniciar sesión de usuario
+   * @param {Object} userData Datos del usuario a iniciar sesión
    */
   const signinUser = async (userData) => {
     try {
-      const response = await loginRequest(userData);
+      const response = await loginUserRequest(userData);
       console.log("Respuesta de login de usuario: ", response.data);
-      setUser(response.data.data);
+      setUser(response.data.data.responseData);
       setIsAuthenticated(true);
       console.log("Usuario autenticado: ", isAuthenticated());
       setErrors(null);
@@ -91,7 +96,7 @@ export const UserProvider = ({ children }) => {
         "Error al iniciar sesión del usuario:",
         error.response.data
       );
-      setErrors(error.response.data.message);
+      setErrors(error.response.data.message || "Error al iniciar sesión");
       return null;
     }
   };
@@ -103,10 +108,6 @@ export const UserProvider = ({ children }) => {
     setIsAuthenticated(false);
     setUser(null);
     removeAuthToken();
-  };
-  const removeAuthToken = () => {
-    Cookies.remove("user-token");
-    Cookies.remove("tokenUser");
   };
 
   // useEffect para borra los errores después de 5 segundos
@@ -120,6 +121,12 @@ export const UserProvider = ({ children }) => {
       };
     }
   }, [errors]);
+  //verificamos si el usuario está autenticado
+  useEffect(() => {
+    if (Cookies.get("tokenUser")) {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   return (
     <UserContext.Provider

@@ -1,9 +1,12 @@
 import User from "../models/userModel.js";
-import bcrpt from "bcryptjs";
+import Patient from "../models/patientModel.js";
+import bcrypt from "bcryptjs";
 import { formatDate } from "../libs/formatDate.js";
 import jwt from "jsonwebtoken";
 import { createAccessToken } from "../libs/jwt.js";
 import { logout } from "./authController.js";
+import { error } from "console";
+import { create } from "domain";
 
 /**
  * Función para registra un usuario
@@ -45,7 +48,7 @@ export const register = async (req, res) => {
     if (req.userId) {
       associationId = req.userId;
     }
-    const passwordHash = await bcrpt.hash(password, 10);
+    const passwordHash = await bcrypt.hash(password, 10);
     const createdAt = formatDate(new Date());
     //creo el nuevo usuario
     const newUser = new User({
@@ -82,6 +85,69 @@ export const register = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error al crear el usuario", error: error });
+  }
+};
+/**
+ * Función para iniciar sesión de un usuario
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+  const errors = [];
+  try {
+    //validar si el usuario existe
+    const userFound = await User.findOne({ email })
+      .populate("association")
+      .populate("patient");
+    if (!userFound) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    if (errors.length > 0) {
+      return res.status(400).json({ message: errors });
+    }
+
+    //si existe el usuario validar la contraseña
+    const isValidPassword = await bcrypt.compare(password, userFound.password);
+    if (!isValidPassword) {
+      errors.push("Contraseña incorrecta");
+    }
+    if (errors.length > 0) {
+      return res.status(400).json({ message: errors });
+    }
+    //si todo bien generar token de acceso
+    const token = await createAccessToken({ id: userFound._id });
+
+    //construyo el objeto de respuesta
+    const responseData = {
+      id: userFound._id,
+      username: userFound.username,
+      email: userFound.email,
+      role: userFound.role,
+      association: userFound.association,
+      patient: userFound.patient,
+      createdAt: userFound.createdAt,
+      updatedAt: userFound.updatedAt,
+    };
+
+    res.cookie("tokenUser", token, {
+      sameSite: "none",
+      secure: true,
+      httpOnly: true,
+    });
+    res.status(200).json({
+      message: "Bienvenido",
+      data: {
+        responseData,
+      },
+      token,
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Error al iniciar sesión", error: error.message });
   }
 };
 
@@ -223,46 +289,6 @@ export const deleteUser = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error al eliminar el usuario " + id, error: error });
-  }
-};
-/**
- * Función para autenticar un usuario
- * @param {*} req
- * @param {*} res
- * @returns
- */
-export const login = async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    //validar si el usuario existe
-    const user = await User.findOne({ email })
-      .populate("association")
-      .populate("patient");
-    if (!user) {
-      return res.status(404).json({ message: "Usuario no encontrado" });
-    }
-    //validar la contraseña
-    const isValidPassword = await bcrpt.compare(password, user.password);
-    if (!isValidPassword) {
-      return res.status(400).json({ message: "Contraseña incorrecta" });
-    }
-    //generar token
-    const token = user.generateJWT();
-    res.json({
-      message: "Bienvenido",
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        role: user.role,
-        association: user.association,
-        patient: user.patient,
-      },
-      token,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error al iniciar sesión", error: error });
   }
 };
 

@@ -1,4 +1,4 @@
-import RegisterAssociation from "../models/associationModel.js";
+import Association from "../models/associationModel.js";
 import bcrypt from "bcryptjs";
 import { createAccessToken } from "../libs/jwt.js";
 import { formatDate } from "../libs/formatDate.js";
@@ -10,14 +10,14 @@ export const register = async (req, res) => {
   const errors = [];
   try {
     //primero que busque si ya existe una asociación con el mismo correo
-    const associationFound = await RegisterAssociation.findOne({
+    const associationFound = await Association.findOne({
       email,
     });
     if (associationFound) {
       errors.push("  El correo electrónico ya está en uso    ");
     }
     //tampooco se puede registrar una asociación con el mismo nombre
-    const associationNameFound = await RegisterAssociation.findOne({
+    const associationNameFound = await Association.findOne({
       associationName,
     });
     if (associationNameFound) {
@@ -29,7 +29,7 @@ export const register = async (req, res) => {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    const newRegisterAssociation = new RegisterAssociation({
+    const newAssociation = new Association({
       associationName,
       email,
       password: passwordHash,
@@ -39,7 +39,7 @@ export const register = async (req, res) => {
       //Keywords: req.body.Keywords || [],
     });
 
-    const savedAssociation = await newRegisterAssociation.save();
+    const savedAssociation = await newAssociation.save();
 
     /**
      * Guardamos el token en una cookie para que el usuario pueda navegar por la aplicacion
@@ -70,13 +70,18 @@ export const register = async (req, res) => {
     });
   }
 };
-
+/**
+ * Funcion para iniciar sesion una asociacion
+ * @param {} req
+ * @param {*} res
+ * @returns
+ */
 export const login = async (req, res) => {
   const { email, password } = req.body;
   const errors = [];
   try {
     //primero ve si existe la asociación
-    const associationFound = await RegisterAssociation.findOne({ email });
+    const associationFound = await Association.findOne({ email });
     if (!associationFound) {
       errors.push(" Asociación o contraseña incorrecta");
     }
@@ -135,7 +140,7 @@ export function logout(req, res) {
 
 export const profile = async (req, res) => {
   try {
-    const associationFound = await RegisterAssociation.findById(req.userId);
+    const associationFound = await Association.findById(req.userId);
     if (!associationFound) {
       return res.status(404).json({ message: "Asociación no encontrada" });
     }
@@ -172,9 +177,7 @@ export const verifyToken = async (req, res) => {
       if (error) {
         return res.status(401).json({ message: "Token no válido" });
       }
-      const associationFound = await RegisterAssociation.findById(
-        asociacion.id
-      );
+      const associationFound = await Association.findById(asociacion.id);
       if (!associationFound) {
         return res.status(404).json({ message: "Asociación no encontrada" });
       }
@@ -206,7 +209,7 @@ export const verifyToken = async (req, res) => {
 
 export const getAssociationById = async (req, res) => {
   try {
-    const associationFound = await RegisterAssociation.findById(
+    const associationFound = await Association.findById(
       req.params.associationId
     );
     if (!associationFound) {
@@ -242,7 +245,7 @@ export const getAssociationById = async (req, res) => {
 
 export const deleteAssociation = async (req, res) => {
   try {
-    const associationFound = await RegisterAssociation.findByIdAndDelete(
+    const associationFound = await Association.findByIdAndDelete(
       req.params.associationId
     );
     if (!associationFound) {

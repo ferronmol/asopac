@@ -5,7 +5,7 @@ export const updateAssociationAddress = async (req, res) => {
   const { street, number, city, state, postalCode } = req.body;
   console.log(req.body);
   try {
-    const association = await RegisterAssociation.findById(id);
+    const association = await Association.findById(id);
     console.log(association);
     if (!association) {
       return res.status(404).json({ message: "Asociación no encontrada" });
