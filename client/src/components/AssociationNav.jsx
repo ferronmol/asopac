@@ -34,7 +34,7 @@ const NavLinks = ({ associationName, isAuthenticated }) => {
         Iniciar Usuario
       </NavLink>
       <NavLink
-        to={`/associations/${associationName}`}
+        to={`/association/${associationName}/info`}
         className={activeStyleCallback({ isActive: true })}
       >
         Sobre Nosotros
