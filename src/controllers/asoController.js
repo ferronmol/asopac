@@ -1,6 +1,11 @@
-// Función para mostrar la información pública de una asociación por su nombre
 import Association from "../models/associationModel.js";
 
+/**
+ *  Función para obtener la información de una asociación por su nombre
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 export const getAssociationByName = async (req, res) => {
   const { associationName } = req.params; // Obtener el nombre de la asociación de los parámetros de la URL
   try {
@@ -45,6 +50,12 @@ export const getAssociationByName = async (req, res) => {
   }
 };
 
+/**
+ *  Función para obtener la lista de asociaciones
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 export const getAllAssociations = async (req, res) => {
   try {
     const associations = await Association.find();

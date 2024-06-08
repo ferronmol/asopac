@@ -1,5 +1,12 @@
 import RegisterAssociation from "../models/associationModel.js";
 
+/**
+ * Función para actualizar la dirección de la asociación
+ * @param {} req
+ * @param {*} res
+ * @returns
+ */
+
 export const updateAssociationAddress = async (req, res) => {
   const { id } = req.params;
   const { street, number, city, state, postalCode } = req.body;

@@ -3,7 +3,7 @@ import manos from "../assets/images/manos.avif";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-white py-8">
+    <footer className="bg-gray-800 text-white py-8 bottom-0 w-full ">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         <div className="mb-6 md:mb-0 md:flex items-center">
           <img
@@ -47,7 +47,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="container mx-auto mt-6 text-sm">
-        <p className="mb-2">© Copyright 2024</p>
+        <p className="mb-2 text-center md:text-left">© Copyright 2024</p>
         <div className="flex justify-center md:justify-end space-x-4">
           <a href="/aviso-legal" className="hover:underline">
             Aviso Legal

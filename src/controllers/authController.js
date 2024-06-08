@@ -5,6 +5,13 @@ import { formatDate } from "../libs/formatDate.js";
 import jwt from "jsonwebtoken";
 import { updateAssociationAddress } from "./asoAddressController.js";
 
+/**
+ *  Función para registrar una asociaci?n
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
+
 export const register = async (req, res) => {
   const { associationName, email, password } = req.body;
   const errors = [];
@@ -165,6 +172,9 @@ export const profile = async (req, res) => {
   }
 };
 
+/**
+ * Función para verificar el token
+ */
 export const verifyToken = async (req, res) => {
   try {
     const { token } = req.cookies;

@@ -1,6 +1,6 @@
 //import { NEWS_API_KEY } from "dotenv";
 /**
- *  Fetches news from the API
+ *  Función para obtener las noticias relacionadas con una asociación
  * @param { String } associationName
  * @param { Array } keywords
  * @param { Number } maxResults
