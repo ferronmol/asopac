@@ -3,10 +3,9 @@ import bcrypt from "bcryptjs";
 import { createAccessToken } from "../libs/jwt.js";
 import { formatDate } from "../libs/formatDate.js";
 import jwt from "jsonwebtoken";
-import { updateAssociationAddress } from "./asoAddressController.js";
 
 /**
- *  Función para registrar una asociaci?n
+ *  Funcion para registrar una asociacion en la base de datos
  * @param {*} req
  * @param {*} res
  * @returns
@@ -55,6 +54,7 @@ export const register = async (req, res) => {
     res.cookie("token", token, {
       sameSite: "none",
       secure: true,
+      httpOnly: true,
     });
 
     //formateo la fecha de creación

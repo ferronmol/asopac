@@ -1,4 +1,4 @@
-import formatDate from "../assets/formatDate";
+//import formatDate from "../assets/formatDate";
 
 const AssociationInfo = ({ info, isAuthenticated, additionalInfo }) => {
   console.log(info); // info publica quitar id
@@ -7,9 +7,10 @@ const AssociationInfo = ({ info, isAuthenticated, additionalInfo }) => {
   if (!info) return null;
 
   const keywordsFormatted = info.keywords.join(", ");
-  const formateCreatedArt = additionalInfo
+  /* const formateCreatedArt = additionalInfo
     ? formatDate(additionalInfo.createdAt)
     : null;
+    */
 
   return (
     <div className="bg-gray-500 p-5 rounded-md mt-0">
@@ -38,9 +39,8 @@ const AssociationInfo = ({ info, isAuthenticated, additionalInfo }) => {
         <>
           <div className="font-semibold text-lg text-gray-200">
             <ul className="list-disc ml-10 mt-2">
-              <li>ID: {additionalInfo.id}</li>
               <li>Palabras clave: {keywordsFormatted}</li>
-              <li>Asociacion creada: {formateCreatedArt}</li>
+              <li>Asociacion creada: {additionalInfo.createdAt}</li>
               <li>Asociación modificada: {additionalInfo.updatedAt}</li>
             </ul>
           </div>

@@ -25,6 +25,7 @@ export const UserProvider = ({ children }) => {
       expires: 1,
       sameSite: "none",
       secure: true,
+      hppOnly: true,
     });
   };
   const removeAuthToken = () => {

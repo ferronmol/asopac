@@ -38,7 +38,11 @@ export const logoutRequest = async () => {
  * @returns
  */
 
-export const verifyTokenRequest = async () => {
-  const response = await API.get("/verify");
+export const verifyTokenRequest = async (token) => {
+  const response = await API.get("/verify", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response;
 };

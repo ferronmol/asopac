@@ -31,12 +31,19 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await registerRequest(asociacionData);
       console.log("Respuesta de asociacion registrada: ", response.data);
+      // Guarda la cookie de autenticación
+      Cookies.set("token", response.data.token, {
+        expires: 1,
+        sameSite: "none",
+        secure: true,
+      });
+      console.log("Cookie de autenticación guardada: ", Cookies.get("token"));
+
       setAsociacion(response.data.data); // Guarda la asociación en el estado
       setAssociationName(response.data.data.associationName); // Guarda el nombre de la asociación en el estado
       setIsAuthenticated(true); // Cambia el estado de autenticación a true
       setErrors(null); // Resetea el estado de errores
-      console.log("asociacion registrada: ", asociacion);
-      console.log("estado de autenticación: ", isAuthenticated);
+
       return response;
     } catch (error) {
       console.error("Error al registrar la asociación:", error.response.data);
@@ -80,6 +87,7 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
     setAsociacion(null);
     Cookies.remove("token");
+    Cookies.remove("tokenUser");
   };
   // useEffect para borra los errores después de 5 segundos
   useEffect(() => {
@@ -96,17 +104,18 @@ export const AuthProvider = ({ children }) => {
   //useEffect para verificar si el token es válido
   useEffect(() => {
     async function checkLogin() {
-      const cookies = Cookies.get();
-      console.log("Cookies: ", cookies);
+      const token = Cookies.get("token");
+      console.log("Cookies: ", Cookies.get());
 
-      if (!cookies.token) {
+      if (!token) {
         setIsAuthenticated(false);
-        console.log("No hay token en las cookies");
-        return setAsociacion(null);
+        setAsociacion(null);
+        setLoading(false);
+        return;
       }
 
       try {
-        const res = await verifyTokenRequest(cookies.token);
+        const res = await verifyTokenRequest(token);
         console.log("Respuesta de verificación de token: ", res.data.data);
 
         if (!res.data.data) {

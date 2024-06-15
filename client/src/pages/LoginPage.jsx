@@ -26,7 +26,7 @@ function LoginPage() {
       if (res.status === 200) {
         setAssociationName(res.data.data.associationName);
         if (isAuthenticated === true) {
-          navigate(`/association/${associationName}/private`);
+          navigate(`/association/${associationName}`);
         } else {
           console.log("Fallo la autenticación");
         }

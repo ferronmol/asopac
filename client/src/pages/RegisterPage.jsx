@@ -1,26 +1,28 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-import { useParams } from "react-router-dom";
 import InputForm from "../components/common/InputForm";
 import ButtonLink from "../components/common/ButtonLink";
 
 function RegisterPage() {
-  const { associationName } = useParams();
-  console.log("Nombre de la asociación en registerpage: ", associationName);
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
-  const { signup, isAuthenticated, errors: registerErrors } = useAuth();
+  const {
+    signup,
+    isAuthenticated,
+    associationName,
+    errors: registerErrors,
+  } = useAuth();
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState("");
 
-  console.log("Nombre de la asociación: ", associationName);
+  // console.log("Nombre de la asociación: ", associationName);
   console.log("autenticado: ", isAuthenticated);
 
   const onSubmit = async (data) => {
@@ -28,14 +30,16 @@ function RegisterPage() {
       data.createdAt = new Date();
       const res = await signup(data);
 
-      if (res.status === 201) {
+      if (res.status === 200) {
         const associationName = res.data.data.associationName;
         setSuccessMessage(res.data.message);
 
         console.log("estado de autenticación: ", isAuthenticated);
+
+        console.log("Nombre de la asociación: ", associationName);
         if (isAuthenticated === true) {
           console.log("Autenticación correcta, redirigiendo...");
-          navigate(`/association/${encodeURIComponent(associationName)}`);
+          navigate(`/association/${associationName}`);
         } else {
           console.log("Fallo la autenticación");
         }
@@ -49,6 +53,13 @@ function RegisterPage() {
       }
     }
   };
+  //uso un useEffect para redirigir al usuario a la página de la asociación si ya está autenticado
+  useEffect(() => {
+    if (isAuthenticated) {
+      console.log("Autenticado cambiado:", isAuthenticated);
+      navigate(`/association/${associationName}`);
+    }
+  }, [isAuthenticated, navigate, associationName]);
 
   return (
     <div>
@@ -82,6 +93,7 @@ function RegisterPage() {
           <InputForm
             label="Nombre de la Asociación"
             name="associationName"
+            type="text"
             register={register}
             errors={errors}
             validation={{
