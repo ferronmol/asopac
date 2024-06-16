@@ -1,27 +1,53 @@
+// Importamos las funciones necesarias de vitest y testing-library
 import { test } from "vitest";
-import { render } from "@testing-library/react";
+import { expect } from "vitest";
+import { screen, render } from "@testing-library/react";
 import ButtonLink from "../components/common/ButtonLink";
 import { MemoryRouter } from "react-router-dom";
 
-test("debe renderizar el componente ButtonLink", () => {
-  const { container } = render(
+// Prueba 1: Renderización como enlace (link)
+test("debe renderizar correctamente como enlace", () => {
+  render(
     <MemoryRouter>
       <ButtonLink text="Iniciar sesión" to="/login" type="link" />
     </MemoryRouter>
   );
 
-  // Verificar si el componente se renderizó correctamente
-  const linkElement = container.querySelector("a");
-  if (!linkElement) {
-    throw new Error("No se encontró el elemento <a>");
-  }
-  if (linkElement.getAttribute("href") !== "/login") {
-    throw new Error("Atributo href del Link incorrecto");
-  }
-  if (linkElement.textContent !== "Iniciar sesión") {
-    throw new Error("Texto del Link incorrecto");
-  }
-
-  // Si llegamos aquí, todas las aserciones han pasado correctamente
-  console.log("¡Todas las pruebas pasaron!");
+  const linkElement = screen.getByRole("link", { name: "Iniciar sesión" });
+  expect(linkElement).toBeInTheDocument();
+  expect(linkElement).toHaveAttribute("href", "/login");
 });
+
+// Prueba 2: Renderización como botón (button)
+test("debe renderizar correctamente como botón", () => {
+  render(<ButtonLink text="Submit" type="button" />);
+
+  const buttonElement = screen.getByRole("button", { name: "Submit" });
+  expect(buttonElement).toBeInTheDocument();
+});
+
+// Prueba 3: Verificación de atributos para link
+test("debe tener atributos correctos para link", () => {
+  render(
+    <MemoryRouter>
+      <ButtonLink text="Iniciar sesión" to="/login" type="link" />
+    </MemoryRouter>
+  );
+
+  const linkElement = screen.getByRole("link", { name: "Iniciar sesión" });
+  expect(linkElement).toHaveAttribute("href", "/login");
+  expect(linkElement.textContent).toBe("Iniciar sesión");
+});
+
+// Prueba 4: Estilos y clases CSS
+test("debe tener las clases CSS correctas", () => {
+  render(<ButtonLink text="Submit" type="button" />);
+
+  const buttonElement = screen.getByRole("button", { name: "Submit" });
+  expect(buttonElement).toHaveClass(
+    "text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mt-2"
+  );
+});
+
+// Ejecutamos todas las pruebas
+export { test };
