@@ -1,10 +1,9 @@
-//import { NEWS_API_KEY } from "dotenv";
 /**
- *  Función para obtener las noticias relacionadas con una asociación
- * @param { String } associationName
- * @param { Array } keywords
- * @param { Number } maxResults
- * @returns {Promise} Promise with the news data
+ * Funcion para obtener noticias de una asociación en base a palabras clave
+ * @param {*} associationName
+ * @param {*} keywords
+ * @param {*} maxResults
+ * @returns
  */
 
 export async function getNewsByAssociation(
@@ -22,26 +21,49 @@ export async function getNewsByAssociation(
     if (!Array.isArray(keywords)) {
       throw new Error("Keywords must be an array");
     }
-    const defaultKeywords = ["enfermedad", "pacientes"];
-    const allkeywords = [
-      ...new Set([...defaultKeywords, ...keywords, associationName]),
-    ];
-    const query = allkeywords.join(" OR ");
-    const newskey = import.meta.env.VITE_NEWS_API_KEY;
-    console.log(newskey);
-    if (!newskey) {
+
+    const newsApiKey = import.meta.env.VITE_NEWS_API_KEY;
+    if (!newsApiKey) {
       throw new Error("News API key is required");
     }
-    const response = await fetch(
-      `https://newsapi.org/v2/everything?q=${query}&apiKey=${newskey}&pageSize=${maxResults}&language=es`
-    );
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch news");
-    }
-    const data = await response.json();
-    data.keyword = query;
-    return data;
+    // Usar solo las keywords proporcionadas por el usuario
+    const uniqueKeywords = [...new Set(keywords)];
+    const keywordQuery = uniqueKeywords.join(" OR ");
+    const associationQuery = associationName;
+
+    const fetchNews = async (query) => {
+      const response = await fetch(
+        `https://newsapi.org/v2/everything?q=${query}&apiKey=${newsApiKey}&pageSize=${maxResults}&language=es`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch news");
+      }
+      return response.json();
+    };
+
+    // Buscar noticias con las palabras clave proporcionadas por el usuario
+    const keywordNewsData = await fetchNews(keywordQuery);
+
+    // Buscar noticias con el nombre de la asociación
+    const associationNewsData = await fetchNews(associationQuery);
+
+    // Combinar los resultados, asegurando que no haya duplicados
+    const combinedNews = [
+      ...new Set([
+        ...keywordNewsData.articles,
+        ...associationNewsData.articles,
+      ]),
+    ];
+
+    // Limitar el número de resultados combinados
+    const limitedCombinedNews = combinedNews.slice(0, maxResults);
+
+    return {
+      articles: limitedCombinedNews,
+      keywordQuery,
+      associationName,
+    };
   } catch (error) {
     console.error("Error fetching news: ", error);
     throw error;
