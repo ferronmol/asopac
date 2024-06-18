@@ -65,6 +65,7 @@ export const register = async (req, res) => {
     res.cookie("tokenUser", token, {
       sameSite: "none",
       secure: true,
+      httpOnly: true,
     });
     //formateo la fecha de creación
     const formattedDate = formatDate(userSaved.createdAt);

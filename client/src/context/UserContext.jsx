@@ -1,5 +1,9 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { registerUserRequest, loginUserRequest } from "../api/user";
+import {
+  registerUserRequest,
+  loginUserRequest,
+  logoutUserRequest,
+} from "../api/user";
 import { getAssociationByNameRequest } from "../api/association";
 import PropTypes from "prop-types";
 import Cookies from "js-cookie";
@@ -105,12 +109,18 @@ export const UserProvider = ({ children }) => {
   /**
    * Función para cerrar sesión de usuario
    */
-  const signoutUser = () => {
-    setIsAuthenticated(false);
-    setUser(null);
-    removeAuthToken();
+  const signoutUser = async () => {
+    try {
+      const response = await logoutUserRequest();
+      console.log("Respuesta de logout de usuario: ", response.data);
+      setUser(null);
+      setIsAuthenticated(false);
+      removeAuthToken();
+      return response;
+    } catch (error) {
+      console.error("Error al cerrar sesión de usuario: ", error);
+    }
   };
-
   // useEffect para borra los errores después de 5 segundos
   useEffect(() => {
     if (errors && errors.length > 0) {

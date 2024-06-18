@@ -30,7 +30,7 @@ export const loginUserRequest = async (user) => {
  * @returns
  */
 export const logoutUserRequest = async () => {
-  const response = await API.post("/user/logout");
+  const response = await API.post("/users/logout");
   return response;
 };
 /**
